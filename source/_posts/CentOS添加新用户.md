@@ -9,10 +9,12 @@ tags: CentOS
 ### 修改新用户密码
     passwd username
 
-### 添加sudo权限
-修改权限相关的配置文件
+<!-- more -->
 
-    visudo
+### 添加sudo权限
+修改权限相关的配置文件，进入`/etc`
+
+    vi sudoers
 
 找到以下内容
 

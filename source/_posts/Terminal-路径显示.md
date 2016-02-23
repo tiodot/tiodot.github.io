@@ -15,6 +15,8 @@ tags: CentOS
 保存修改并退出，应用更新：
 > source ~/.bash_profile
 
+<!-- more -->
+
 附录：
 `$PS1`符号对应的含义，
 ```

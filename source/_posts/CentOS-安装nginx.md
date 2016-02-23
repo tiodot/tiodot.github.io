@@ -8,6 +8,8 @@ tags: CentOS
 ### 安装nginx
     sudo yum install nginx
 
+<!-- more -->
+
 ### nginx常用操作
 启动
 
