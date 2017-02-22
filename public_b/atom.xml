@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[学习是一种信仰]]></title>
+  <subtitle><![CDATA[我们终其一生都在摆脱他人的期待，追求自由。]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://xchb.work/"/>
+  <updated>2017-02-22T04:51:46.000Z</updated>
+  <id>http://xchb.work/</id>
+  
+  <author>
+    <name><![CDATA[swxy]]></name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[ES6之Destructuring]]></title>
+    <link href="http://xchb.work/2017/02/21/ES6%E4%B9%8BDestructuring/"/>
+    <id>http://xchb.work/2017/02/21/ES6之Destructuring/</id>
+    <published>2017-02-21T03:08:01.000Z</published>
+    <updated>2017-02-22T04:51:46.000Z</updated>
+    <content type="html"><![CDATA[<p>记录不同形式Destructuring导致的不同结果：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">move1</span><span class="params">(&#123;x=<span class="number">0</span>, y=<span class="number">0</span>&#125; = &#123;&#125;)</span> </span>&#123;</span><br><span class="line">    console.<span class="built_in">log</span>(x, y)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">function <span class="title">move2</span><span class="params">(&#123;x, y&#125; = &#123;x: <span class="number">0</span>, y: <span class="number">0</span>&#125;)</span> </span>&#123;</span><br><span class="line">    console.<span class="built_in">log</span>(x, y)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>分别测试以下几种情况：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 测试输入为空</span></span><br><span class="line">move1();   <span class="comment">// 0 0</span></span><br><span class="line">move2(); <span class="comment">// 0 0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试输入&#123;z: 3&#125;</span></span><br><span class="line">move1(&#123;z:<span class="number">3</span>&#125;);   <span class="comment">// 0 0</span></span><br><span class="line">move2(&#123;z:<span class="number">3</span>&#125;); <span class="comment">// undefined undefined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试输入 &#123;x:1, y: 2&#125;</span></span><br><span class="line">move1(&#123;x:<span class="number">1</span>, y:<span class="number">2</span>&#125;)     <span class="comment">// 1, 2</span></span><br><span class="line">move2(&#123;x:<span class="number">1</span>, y:<span class="number">2</span>&#125;)   <span class="comment">// 1, 2</span></span><br></pre></td></tr></table></figure></p>
+<p>对于<code>move1</code>函数：</p>
+<ol>
+<li>如果输入为空 <code>&#39;&#39;</code>  ==&gt;  <code>{x = 0, y = 0} = {}</code>  ==&gt; <code>x = 0, y = 0</code>;</li>
+<li>输入为 <code>{z: 3}]</code>  ==&gt;  <code>{x = 0, y = 0} = {z: 3}</code>  ==&gt; <code>x = 0, y = 0</code>;</li>
+<li>输入为 <code>{x:1, y: 2}</code> ==&gt; <code>{x = 0, y = 0} = {x: 1, y: 2}</code> ==&gt; <code>x = 1, y = 2</code>;</li>
+</ol>
+<p>对于<code>move2</code>函数：</p>
+<ol>
+<li>如果输入为空 <code>&#39;&#39;</code>  ==&gt;  <code>{x, y} = {x: 0, y: 0}</code>  ==&gt; <code>x = 0, y = 0</code>;</li>
+<li>输入为 <code>{z: 3}]</code>  ==&gt;  <code>{x, y} = {z: 3}</code>  ==&gt; <code>x = undefined, y = undefined</code>;</li>
+<li>输入为 <code>{x:1, y: 2}</code> ==&gt; <code>{x, y} = {x: 1, y: 2}</code> ==&gt; <code>x = 1, y = 2</code>;</li>
+</ol>
+<p>主要区别就是有输入时，如果没有同名属性 <code>{x, y} = {x: 0, y: 0}</code>这种写法取不到默认值。</p>
+<p>ps. 在ES6中如果解构对象时：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let &#123;a, ...b&#125; = &#123;a: <span class="number">1</span>, c: <span class="number">2</span>, d:<span class="number">3</span>&#125;  <span class="comment">// Uncaught SyntaxError: Unexpected token ...</span></span><br></pre></td></tr></table></figure>
+<p>但是在React中使用ES6这种写法却很常见，原因是babel(<a href="http://babeljs.io/repl" target="_blank" rel="external">babel在线编译</a>)增强解构功能，会将这种写法编译为：<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> _objectWithoutProperties(obj, keys) &#123;</span><br><span class="line">    var target = &#123;&#125;;</span><br><span class="line">    for (var i in obj) &#123;</span><br><span class="line">        if (keys.indexOf(i) &gt;= <span class="number">0</span>) continue;</span><br><span class="line">        if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;</span><br><span class="line">        target[i] = obj[i];</span><br><span class="line">    &#125;</span><br><span class="line">    return target;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var _a<span class="variable">$c</span><span class="variable">$d</span> = &#123; a: <span class="number">1</span>, c: <span class="number">2</span>, d: <span class="number">3</span> &#125;,</span><br><span class="line">    a = _a<span class="variable">$c</span><span class="variable">$d</span>.a,</span><br><span class="line">    b = _objectWithoutProperties(_a<span class="variable">$c</span><span class="variable">$d</span>, [<span class="string">"a"</span>]);</span><br></pre></td></tr></table></figure></p>
+<p>扩展阅读：</p>
+<ol>
+<li><a href="http://exploringjs.com/es6/ch_destructuring.html" target="_blank" rel="external">Exploring ES6 Destructuring</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>记录不同形式Destructuring导致的不同结果：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">move1</span><span class="params">(&#123;x=<span class="number">0</span>, y=<span class="number">0</span>&#125; = &#123;&#125;)</span> </span>&#123;</span><br><span class="line">    console.<span class="built_in">log</span>(x, y)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">function <span class="title">move2</span><span class="params">(&#123;x, y&#125; = &#123;x: <span class="number">0</span>, y: <span class="number">0</span>&#125;)</span> </span>&#123;</span><br><span class="line">    console.<span class="built_in">log</span>(x, y)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]>
+    
+    </summary>
+    
+      <category term="JS" scheme="http://xchb.work/tags/JS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[ES6之Temporal Dead Zone]]></title>
+    <link href="http://xchb.work/2017/02/20/ES6%E4%B9%8BTemporal-Dead-Zone/"/>
+    <id>http://xchb.work/2017/02/20/ES6之Temporal-Dead-Zone/</id>
+    <published>2017-02-20T03:26:08.000Z</published>
+    <updated>2017-02-22T04:48:39.000Z</updated>
+    <content type="html"><![CDATA[<p>在使用ES6时，一般都是推荐使用<code>let, const</code>来定义变量，相对<code>var</code>而言：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">Hoisting</th>
+<th style="text-align:left">Scope</th>
+<th style="text-align:left">Creates global properties</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">var</td>
+<td style="text-align:left">Declaration</td>
+<td style="text-align:left">Function</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">let</td>
+<td style="text-align:left">Temporal dead zone</td>
+<td style="text-align:left">Block</td>
+<td style="text-align:left">No</td>
+</tr>
+<tr>
+<td style="text-align:left">const</td>
+<td style="text-align:left">Temporal dead zone</td>
+<td style="text-align:left">Block</td>
+<td style="text-align:left">No</td>
+</tr>
+</tbody>
+</table>
+<p><code>Temporal dead zone</code>这个与<code>var</code>的<code>Declaration</code>有什么不一样的地方？</p>
+<a id="more"></a>
+<p>先看一个例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// var定义的变量提升</span></span><br><span class="line"><span class="built_in">console</span>.log(tmpVar); <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> tmpVar = <span class="number">12</span>; <span class="comment">// var定义的变量不是块级作用域</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(tmpVar); <span class="comment">// 12</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// let定义的变量提升</span></span><br><span class="line"><span class="keyword">let</span> tmp = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123; <span class="comment">// 新的作用域 TDZ 开始</span></span><br><span class="line">    <span class="built_in">console</span>.log(tmp);  <span class="comment">// ReferenceError</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> tmp; <span class="comment">// TDZ 结束, `tmp` 被初始化为 undefined</span></span><br><span class="line">    <span class="built_in">console</span>.log(tmp); <span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line">    tmp = <span class="number">123</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(tmp); <span class="comment">// 123</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(tmp); <span class="comment">// true</span></span><br></pre></td></tr></table></figure></p>
+<p>可以查看其实<code>TDZ</code>类似于一个视觉的盲区，在作用域中应该意识到变量的存在，但却看不见，更用不了。</p>
+<p>之所以需要<code>TDZ</code>：</p>
+<ol>
+<li>捕获错误： 变量提升本就比较奇怪，也不太符合变量需要定义才能使用的逻辑。</li>
+<li><code>const</code>语义要求： <code>const</code>定义一个不可以变更的常量，只能在定义时赋值，如果存在变量提升和语义不符合。为了保持一致，所以<code>let</code>也有<code>TDZ</code>。</li>
+</ol>
+<h1 id="相关资料">相关资料</h1><ol>
+<li><a href="http://exploringjs.com/es6/ch_variables.html" target="_blank" rel="external">9.4 The temporal dead zone</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在使用ES6时，一般都是推荐使用<code>let, const</code>来定义变量，相对<code>var</code>而言：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">Hoisting</th>
+<th style="text-align:left">Scope</th>
+<th style="text-align:left">Creates global properties</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">var</td>
+<td style="text-align:left">Declaration</td>
+<td style="text-align:left">Function</td>
+<td style="text-align:left">Yes</td>
+</tr>
+<tr>
+<td style="text-align:left">let</td>
+<td style="text-align:left">Temporal dead zone</td>
+<td style="text-align:left">Block</td>
+<td style="text-align:left">No</td>
+</tr>
+<tr>
+<td style="text-align:left">const</td>
+<td style="text-align:left">Temporal dead zone</td>
+<td style="text-align:left">Block</td>
+<td style="text-align:left">No</td>
+</tr>
+</tbody>
+</table>
+<p><code>Temporal dead zone</code>这个与<code>var</code>的<code>Declaration</code>有什么不一样的地方？</p>]]>
+    
+    </summary>
+    
+      <category term="JS" scheme="http://xchb.work/tags/JS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[TCP三步握手]]></title>
+    <link href="http://xchb.work/2017/02/06/TCP%E4%B8%89%E6%AD%A5%E6%8F%A1%E6%89%8B/"/>
+    <id>http://xchb.work/2017/02/06/TCP三步握手/</id>
+    <published>2017-02-06T02:58:35.000Z</published>
+    <updated>2017-02-06T13:55:47.000Z</updated>
+    <content type="html"><![CDATA[<p>探索问题：</p>
+<ol>
+<li>TCP建立连接为什么要三步握手</li>
+<li>建立连接时发送的SEQ, ACK是什么</li>
+</ol>
+<a id="more"></a>
+<h1 id="三步握手">三步握手</h1><p>握手主要原因：在不可靠的网络之上提供可靠的服务。</p>
+<p>在Andrew S.Tanenbaum的经典书籍《计算机网络》第5版的「6.2.2 连接建立」小节有很详细的说明：</p>
+<p>首先，因为网络有可能会出现延迟或者重复数据包的时候，所以在连接的建立时，每个数据包都会有一个序号，以解决如何区分重复数据包的问题。</p>
+<p>然而，这样还是会有问题，《计算机网络》中说的是『数据包的接受者通常不会去保存连接的序号，所以无法区分CONNECTION REQUEST中的初始序号是否和当前连接的序号重复。』我对这句话的理解：</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">HOST1</span>                      <span class="comment">HOST2</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">|</span> <span class="literal">-</span><span class="literal">-</span><span class="literal">-</span> <span class="comment">SYN(SEQ=x)</span>          <span class="literal">-</span><span class="literal">-</span>&gt; <span class="comment">|</span>       </span><br><span class="line"></span><br><span class="line">  <span class="comment">|</span> &lt;<span class="literal">-</span><span class="literal">-</span> <span class="comment">SYN(SEQ=Y)</span>          <span class="literal">-</span><span class="literal">-</span><span class="literal">-</span> <span class="comment">|</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">|</span> <span class="literal">-</span><span class="literal">-</span><span class="literal">-</span> <span class="comment">SYN(SEQ=x</span><span class="string">,</span> <span class="comment">ACK=y</span><span class="literal">+</span><span class="comment">1)</span> <span class="literal">-</span><span class="literal">-</span>&gt; <span class="comment">|</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">|</span> &lt;<span class="literal">-</span><span class="literal">-</span> <span class="comment">SYN(SEQ=y</span><span class="string">,</span> <span class="comment">ACK=x</span><span class="literal">+</span><span class="comment">1)</span> <span class="literal">-</span><span class="literal">-</span><span class="literal">-</span> <span class="comment">|</span></span><br></pre></td></tr></table></figure>
+<p>此时建立的连接应该是一个，而不是两个，因为所有的连接都是有它们的端点（由TCP的端口加上所在主机的IP地址组成「6.5.4 TCP端的头」小节有介绍）来标识的。第一个请求产生了一个由（x,y）标识的连接，而第二个请求也建立一个这样的连接，实际上只有一个表项，即(x,y)。</p>
+<p>针对上述问题，引入了三步握手协议。这个协议要求在建立连接时，一方需要和另一方确认连接请求是否是当前的。即 A -SYN(SEQ=x)-&gt; B; B -SYN(SEQ=y, ACK=x+1)-&gt;A; A -DATA(SEQ=x+1,ACK=y+1)-&gt; B。</p>
+<p>当然三步握手也不是绝对可靠，因为请求只能保证之前的传输是可靠，但不能预测接下来的也正确，在知乎上看到一个回答可以参考<a href="https://www.zhihu.com/question/24853633" target="_blank" rel="external">TCP 为什么是三次握手，为什么不是两次或四次？</a>, 为了方便阅读，引用至此：</p>
+<blockquote>
+<p>这个问题的本质是, 信道不可靠, 但是通信双发需要就某个问题达成一致. 而要解决这个问题,  无论你在消息中包含什么信息, 三次通信是理论上的最小值. 所以三次握手不是TCP本身的要求, 而是为了满足”在不可靠信道上可靠地传输信息”这一需求所导致的. 请注意这里的本质需求,信道不可靠, 数据传输要可靠. 三次达到了, 那后面你想接着握手也好, 发数据也好, 跟进行可靠信息传输的需求就没关系了. 因此,如果信道是可靠的, 即无论什么时候发出消息, 对方一定能收到, 或者你不关心是否要保证对方收到你的消息, 那就能像UDP那样直接发送消息就可以了.”</p>
+</blockquote>
+<h1 id="字段说明">字段说明</h1><ol>
+<li><p>SEQ，初始序号。在一个时间周期T（互联网比较随意的定为120s，看具体实现）内，这个序号应该是唯一的。</p>
+</li>
+<li><p>ACK, SEQ+1. 表示确认序号SEQ的请求，TCP确认数据包的机制。</p>
+</li>
+</ol>
+<h1 id="参考">参考</h1><ol>
+<li>《计算机网络》 by Andrew S.Tanenbaum</li>
+<li><a href="https://www.zhihu.com/question/24853633" target="_blank" rel="external">TCP 为什么是三次握手，为什么不是两次或四次？</a></li>
+<li><a href="http://blog.csdn.net/wjtxt/article/details/6606022" target="_blank" rel="external">TCP报文到达确认（ACK）机制</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>探索问题：</p>
+<ol>
+<li>TCP建立连接为什么要三步握手</li>
+<li>建立连接时发送的SEQ, ACK是什么</li>
+</ol>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Socket.io问题分析]]></title>
+    <link href="http://xchb.work/2017/02/03/Socket-io%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90/"/>
+    <id>http://xchb.work/2017/02/03/Socket-io问题分析/</id>
+    <published>2017-02-03T07:59:57.000Z</published>
+    <updated>2017-02-03T08:21:17.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="广播数据">广播数据</h2><p>如何向所有的客户端广播数据？</p>
+<ol>
+<li><p>使用io.sockets.emit</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"></span><br><span class="line">var <span class="built_in">io</span> = <span class="built_in">require</span>(<span class="string">'socket.io'</span>)(server);</span><br><span class="line"><span class="built_in">io</span>.on(<span class="string">'connection'</span>, <span class="function"><span class="keyword">function</span><span class="params">(socket)</span></span>&#123;</span><br><span class="line">    <span class="built_in">io</span>.sockets.emit(<span class="string">'new'</span>, &#123;hello: <span class="string">'world'</span>&#125;);      </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用socket.broadcast.emit</p>
+</li>
+</ol>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"></span><br><span class="line">var <span class="built_in">io</span> = <span class="built_in">require</span>(<span class="string">'socket.io'</span>)(server);</span><br><span class="line"><span class="built_in">io</span>.on(<span class="string">'connection'</span>, <span class="function"><span class="keyword">function</span><span class="params">(socket)</span></span>&#123;</span><br><span class="line">    socket.broadcast.emit(<span class="string">'new'</span>, &#123;hello: <span class="string">'world'</span>&#125;);      </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>两种方式区别<code>io.sockets.emit</code>向所有连接的客户端广播数据，而<code>socket.broadcast.emit</code>则向<br>除了该<code>socket</code>自身之外的其他所有广播数据。其实也就是说<br><code>io.sockets.emit</code> = <code>socket.broadcast.emit</code> + <code>socket.emit</code></p>
+<p>因此可以猜测出socket.io内部会保留所有连接的socket。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="广播数据">广播数据</h2><p>如何向所有的客户端广播数据？</p>
+<ol>
+<li><p>使用io.sockets.emit</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><]]>
+    </summary>
+    
+      <category term="JS" scheme="http://xchb.work/tags/JS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[nodejs mongodb]]></title>
+    <link href="http://xchb.work/2016/11/29/nodejs-mongodb/"/>
+    <id>http://xchb.work/2016/11/29/nodejs-mongodb/</id>
+    <published>2016-11-29T12:01:09.000Z</published>
+    <updated>2016-11-29T12:20:16.000Z</updated>
+    <content type="html"><![CDATA[<p>记录一下nodejs配置mongodb的过程：</p>
+<ol>
+<li><p>mac上安装mongodb:</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span>install mongodb</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个存在数据目录</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">mkdir</span> -p ~/<span class="typedef"><span class="keyword">data</span>/db</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在用户根目录运行mongodb，指定数据存在路径为刚刚新建的目录</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongod <span class="comment">--dbpath=./data/db</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+</li>
+<li><p>安装nodejs驱动程序mongodb和mongoose</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">install</span> mongoose mongodb</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>连接mongodb：</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const mongoose = <span class="built_in">require</span>(<span class="string">'mongoose'</span>);</span><br><span class="line"></span><br><span class="line">mongoose.connect(<span class="string">'mongodb://localhost/todo'</span>);</span><br><span class="line"></span><br><span class="line">mongoose.connection.<span class="literal">on</span>(<span class="string">'error'</span>, err =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.error(err);</span><br><span class="line">&#125;).<span class="literal">on</span>(<span class="string">'open'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'connected'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>其他：</p>
+<p>mongodb可视化软件：<a href="https://mongobooster.com/" target="_blank" rel="external">mongobooster</a> 没有找到破解版，而且价格略贵</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>记录一下nodejs配置mongodb的过程：</p>
+<ol>
+<li><p>mac上安装mongodb:</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span>install mongodb</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个存在数据目录</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">mkdir</span> -p ~/<span class="typedef"><span class="keyword">data</span>/db</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在用户根目录运行mongodb，指定数据存在路径为刚刚新建的目录</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongod <span class="comment">--dbpath=./data/db</span></span><br></pre></td></tr></table></figure>]]>
+    
+    </summary>
+    
+      <category term="nodejs" scheme="http://xchb.work/tags/nodejs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[网页代理]]></title>
+    <link href="http://xchb.work/2016/11/10/%E7%BD%91%E9%A1%B5%E4%BB%A3%E7%90%86/"/>
+    <id>http://xchb.work/2016/11/10/网页代理/</id>
+    <published>2016-11-10T01:54:04.000Z</published>
+    <updated>2016-11-11T13:37:28.000Z</updated>
+    <content type="html"><![CDATA[<p>前端开发时，经常需要用代理工具Charles或者Fiddler来抓包，或修改接口或替换文件或查看提交数据等，都是非常方便。尤其是做移动端开发时，是不是经常得配置host，或者查看页面请求的数据是否正确，相信我，此时使用Charles的远程代理是一件很幸福的事情。</p>
+<p>当我们打开浏览器请求一个页面时候，为什么Charles就能捕获到请求？然而如果chrome使用了<code>SwitchyOmega（配合shadowsocks，翻墙神器）</code>或者类似的代理插件，此时Charles时捕获不到我们发的请求。</p>
+<a id="more"></a>
+<p>一开始我也很困惑，直到有一次Charles崩溃了，使用装有<code>SwitchyOmega</code>插件的chrome浏览器可以正常联网，而其他浏览器却不行了。在查看网络设置（网络-&gt;代理）中，一不小发现：</p>
+<p><img src="/img/proxy/network.png" alt="代理设置"></p>
+<p>我明明没有设置过这个东西啊，看着<code>8888</code>这个端口号好熟悉啊，额，这个不就是Charles代理设置里面默认的端口号嘛。于是好像突然明白了，Charles是通过这个来监听网页请求，然后抓包，然后就可以对请求进行修改请求参数，断点调试等。</p>
+<p>然后再次正常打开Charles，然后正常关闭，果然网页代理设置没有，非chrome浏览器也可以正常联网了。如果打开Charles，手动把代理设置取消，Charles也捕获不了请求了。</p>
+<p>既然Charles可以通过设置网络代理来捕获请求，那是否可以自己写一个服务器也实现同样的功能呢？</p>
+<p>首先创建一个简单的node服务器：<br><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"></span><br><span class="line">http.createServer(<span class="function"><span class="params">(req, res)</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.url);</span><br><span class="line">    res.writeHead(<span class="number">200</span>, &#123;<span class="string">'Content-Type'</span>: <span class="string">'text/plain'</span>&#125;);</span><br><span class="line">    res.end(<span class="string">'it work'</span>);</span><br><span class="line">&#125;).listen(<span class="number">1338</span>, <span class="string">'127.0.0.1'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'server start at 127.0.0.1:1338'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>然后启动服务器，顺便设置网络的网页代理为服务器的地址<code>127.0.0.1:1338</code>;接下来访问一个http地址(<a href="http://www.csdn.net/" target="_blank" rel="external">csdn</a>)，因为设置网页代理，当然也可以设置安全网页代理。页面如期待的那样出现了<code>it work</code>。</p>
+<p>代理服务器已经搭建好，但怎么像Charles一样能正常返回请求的页面？</p>
+<p>万事开头难，开头了，其实后面确实也就简单了很多。有疑问，但知道具体想做什么，百度一下，不就什么都知道了嘛。参考<a href="https://imququ.com/post/web-proxy.html" target="_blank" rel="external">HTTP 代理原理及实现（一）</a>修改一下源码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"><span class="keyword">const</span> url = <span class="built_in">require</span>(<span class="string">'url'</span>);</span><br><span class="line">http.createServer((req, res) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.url);</span><br><span class="line">    <span class="keyword">const</span> u = url.parse(req.url);</span><br><span class="line">    <span class="keyword">var</span> options = &#123;</span><br><span class="line">        hostname : u.hostname,</span><br><span class="line">        port     : u.port || <span class="number">80</span>,</span><br><span class="line">        path     : u.path,</span><br><span class="line">        method   : req.method,</span><br><span class="line">        headers  : req.headers</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">var</span> pReq = http.request(options, <span class="function"><span class="keyword">function</span>(<span class="params">pRes</span>) </span>&#123;</span><br><span class="line">        res.writeHead(pRes.statusCode, pRes.headers);</span><br><span class="line">        pRes.pipe(res);</span><br><span class="line">    &#125;).on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">        res.end();</span><br><span class="line">    &#125;);</span><br><span class="line">    req.pipe(pReq);</span><br><span class="line">&#125;).listen(<span class="number">1338</span>, <span class="string">'127.0.0.1'</span>, () =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'server start at 127.0.0.1:1338'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>顺利完成http代理，不信你再访问<a href="http://www.csdn.net/" target="_blank" rel="external">csdn</a>试试，没有出现页面就是csdn挂了。至于https的可以参考<a href="https://imququ.com/post/web-proxy.html" target="_blank" rel="external">HTTP 代理原理及实现（一）</a>里面有详细的介绍Http代理相关的知识。</p>
+<p>嗯嗯，http代理完成了，但是还有个问题啊，为什么上面通过解析<code>req.url</code>就能获取请求的目标地址，而自己想写一个脚本访问CSDN：<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = require(<span class="string">"http"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    host: <span class="string">"localhost"</span>,</span><br><span class="line">    port: <span class="number">1338</span>,</span><br><span class="line">    <span class="keyword">method</span>: '<span class="type">GET</span>'</span><br><span class="line">&#125;;</span><br><span class="line">http.request(options, function(res) &#123;</span><br><span class="line">    res.pipe(process.<span class="literal">stdout</span>);</span><br><span class="line">&#125;).<span class="keyword">end</span>();</span><br></pre></td></tr></table></figure></p>
+<p>遍观<a href="https://nodejs.org/dist/latest-v6.x/docs/api/http.html#http_http_get_options_callback" target="_blank" rel="external">nodejs官网http.request</a>的可选参数, 都没有提到如何设置。不知道又想不明白，能咋办，上网找呗。</p>
+<p>在stackoverflow上找到了一个解决方案，<a href="http://stackoverflow.com/questions/3862813/how-can-i-use-an-http-proxy-with-node-js-http-client" target="_blank" rel="external">传送–&gt;How can I use an http proxy with node.js http.Client</a>给的方案是设置<code>path</code>:<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = require(<span class="string">"http"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> options = &#123;</span><br><span class="line">    host: <span class="string">"localhost"</span>,</span><br><span class="line">    port: <span class="number">1338</span>,</span><br><span class="line">    <span class="keyword">method</span>: '<span class="type">GET</span>',</span><br><span class="line">    path: <span class="string">"http://www.csdn.net"</span>,</span><br><span class="line">    headers: &#123;</span><br><span class="line">       <span class="type">Host</span>: <span class="string">"www.csdn.net"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">http.request(options, function(res) &#123;</span><br><span class="line">    res.pipe(process.<span class="literal">stdout</span>);</span><br><span class="line">&#125;).<span class="keyword">end</span>();</span><br></pre></td></tr></table></figure></p>
+<p>仔细想像好像真的是这么回事啊，如果不设置<code>path</code>,服务器默端的<code>req.url</code>就是个<code>/</code>，这个不就是默认的<code>path</code>的值嘛。至于设置<code>headers</code>里面的<code>Host</code>, 如果不设置会默认为<code>localhost:1338</code>，也就是请求的服务器的host，这样获得的是一个403页面，如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">head</span>&gt;</span><span class="tag">&lt;<span class="title">title</span>&gt;</span>403 Forbidden<span class="tag">&lt;/<span class="title">title</span>&gt;</span><span class="tag">&lt;/<span class="title">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">body</span> <span class="attribute">bgcolor</span>=<span class="value">"white"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">center</span>&gt;</span><span class="tag">&lt;<span class="title">h1</span>&gt;</span>403 Forbidden<span class="tag">&lt;/<span class="title">h1</span>&gt;</span><span class="tag">&lt;/<span class="title">center</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">hr</span>&gt;</span><span class="tag">&lt;<span class="title">center</span>&gt;</span>nginx<span class="tag">&lt;/<span class="title">center</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>参考：</p>
+<ol>
+<li><a href="https://imququ.com/post/web-proxy.html" target="_blank" rel="external">HTTP 代理原理及实现（一）</a></li>
+<li><a href="http://stackoverflow.com/questions/3862813/how-can-i-use-an-http-proxy-with-node-js-http-client" target="_blank" rel="external">How can I use an http proxy with node.js http.Client</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>前端开发时，经常需要用代理工具Charles或者Fiddler来抓包，或修改接口或替换文件或查看提交数据等，都是非常方便。尤其是做移动端开发时，是不是经常得配置host，或者查看页面请求的数据是否正确，相信我，此时使用Charles的远程代理是一件很幸福的事情。</p>
+<p>当我们打开浏览器请求一个页面时候，为什么Charles就能捕获到请求？然而如果chrome使用了<code>SwitchyOmega（配合shadowsocks，翻墙神器）</code>或者类似的代理插件，此时Charles时捕获不到我们发的请求。</p>]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[nodejs使用shebang]]></title>
+    <link href="http://xchb.work/2016/09/30/nodejs%E4%BD%BF%E7%94%A8shebang/"/>
+    <id>http://xchb.work/2016/09/30/nodejs使用shebang/</id>
+    <published>2016-09-30T02:19:20.000Z</published>
+    <updated>2016-09-30T03:06:33.000Z</updated>
+    <content type="html"><![CDATA[<h1 id="基本含义">基本含义</h1><p><code>shebang</code>也可以称之为<code>hashbang</code>, 代指<code>#!</code>。一般出现在脚本的第一行，用于在unix系统或类unix系统中指定默认的脚本文件的解释程序。<br>其语法格式是：</p>
+<blockquote>
+<p>#!interpreter [optional-arg] // 解释程序的绝对路径和可选参数</p>
+</blockquote>
+<ol>
+<li>如果脚本文件中没有<code>#!</code>这一行，执行时会以系统默认的解释程序允许</li>
+<li>如果<code>#!</code>之后的解释程序是一个可执行文件，那么执行这个脚本时，它就会把文件名及其参数一起作为参数传给那个解释程序去执行。</li>
+</ol>
+<a id="more"></a>
+<h1 id="示例">示例</h1><p>在我的电脑中通过<code>nvm</code>安装了两个node版本。一个是4.4.5版本，一个是6.2.0版本。</p>
+<ol>
+<li><p>新建一个脚本文件–<code>testShebang</code>，通过<code>shebang</code>指定其默认node版本为4.4.5</p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="shebang">#! /Users/baidu/.nvm/versions/node/v4.4.5/bin/node</span></span><br><span class="line"><span class="comment">// 打印node的版本</span></span><br><span class="line">console.log(process.<span class="keyword">version</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>给<code>testShebang</code>添加可执行权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chmod <span class="number">755</span> <span class="built_in">test</span>Shebang</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>切换终端的node版本为6.2.0。</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">node</span><span class="identifier"> </span><span class="title">-v</span></span><br><span class="line">v6.<span class="number">2.0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>指定node执行该文件</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">node</span><span class="identifier"> </span><span class="title">testShebang</span></span><br><span class="line">v6.<span class="number">2.0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>直接执行</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./testShebang</span><br><span class="line">v4<span class="number">.4</span><span class="number">.5</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="参考">参考</h1><ol>
+<li><a href="https://en.wikipedia.org/wiki/Shebang_(Unix" target="_blank" rel="external">wikipedia: Shebang (Unix)</a>)</li>
+<li><a href="https://linux.cn/article-3664-1.html" target="_blank" rel="external">释伴：Linux 上的 Shebang 符号(#!)</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h1 id="基本含义">基本含义</h1><p><code>shebang</code>也可以称之为<code>hashbang</code>, 代指<code>#!</code>。一般出现在脚本的第一行，用于在unix系统或类unix系统中指定默认的脚本文件的解释程序。<br>其语法格式是：</p>
+<blockquote>
+<p>#!interpreter [optional-arg] // 解释程序的绝对路径和可选参数</p>
+</blockquote>
+<ol>
+<li>如果脚本文件中没有<code>#!</code>这一行，执行时会以系统默认的解释程序允许</li>
+<li>如果<code>#!</code>之后的解释程序是一个可执行文件，那么执行这个脚本时，它就会把文件名及其参数一起作为参数传给那个解释程序去执行。</li>
+</ol>]]>
+    
+    </summary>
+    
+      <category term="nodejs" scheme="http://xchb.work/tags/nodejs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Angular 小技巧]]></title>
+    <link href="http://xchb.work/2016/09/27/Angular-%E5%B0%8F%E6%8A%80%E5%B7%A7/"/>
+    <id>http://xchb.work/2016/09/27/Angular-小技巧/</id>
+    <published>2016-09-27T01:35:35.000Z</published>
+    <updated>2016-10-04T02:50:45.000Z</updated>
+    <content type="html"><![CDATA[<h1 id="1-textarea的placeholder换行">1.<code>textarea</code>的<code>placeholder</code>换行</h1><p>问题：placeholder中的文本过长，或者需要格式化展示文本时，需要使用多行展示。<br>解决方案：使用angular中的数据绑定就可以轻松实现<br><figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="title">textarea</span> <span class="attribute">rows</span>=<span class="value">"6"</span> <span class="attribute">cols</span>=<span class="value">"45"</span> <span class="attribute">placeholder</span>=<span class="value">"</span></span></span><span class="expression">&#123;&#123;'第一行\<span class="variable">n</span>第二行\<span class="variable">n</span>第三行\<span class="variable">n</span>第四行'&#125;&#125;</span><span class="xml"><span class="tag"><span class="value">"</span>&gt;</span><span class="tag">&lt;/<span class="title">textarea</span>&gt;</span></span></span><br></pre></td></tr></table></figure></p>
+<p>解决方案来源：<a href="http://stackoverflow.com/a/38128759" target="_blank" rel="external">Can you have multiline HTML5 placeholder text in a <textarea>?</textarea></a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h1 id="1-textarea的placeholder换行">1.<code>textarea</code>的<code>placeholder</code>换行</h1><p>问题：placeholder中的文本过长，或者需要格式化展示文本时，需要使用多行展示。<br>解]]>
+    </summary>
+    
+      <category term="Angular" scheme="http://xchb.work/tags/Angular/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[angular项目中使用iframe相关问题]]></title>
+    <link href="http://xchb.work/2016/09/22/angular%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8iframe%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/"/>
+    <id>http://xchb.work/2016/09/22/angular项目中使用iframe相关问题/</id>
+    <published>2016-09-22T09:30:34.000Z</published>
+    <updated>2016-09-22T09:38:08.000Z</updated>
+    <content type="html"><![CDATA[<h1 id="iframe高度自适应">iframe高度自适应</h1><p>问题： 在angular项目中需要嵌入第三方页面，通过iframe来实现，但是嵌入的页面高度未知。</p>
+<p>解决方案：自定义一个angular指令，监听iframe的<code>onload</code>事件来获取iframe中内容的高度。</p>
+<a id="more"></a>
+<p>源码：</p>
+<p>angular 代码<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义指令</span></span><br><span class="line">App.directive(<span class="string">'iframeOnload'</span>, [<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        scope: &#123;</span><br><span class="line">            callBack: <span class="string">'&amp;iframeOnload'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        link: <span class="function"><span class="keyword">function</span><span class="params">(scope, element, attrs)</span></span>&#123;</span><br><span class="line">            element.on(<span class="string">'load'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">                <span class="comment">// 关键是这个</span></span><br><span class="line">                element.height(element.contents().outerHeight());</span><br><span class="line">                <span class="keyword">return</span> scope.callBack();</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;&#125;]);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">App.controller(<span class="string">'MyController'</span>, [<span class="string">'$scope'</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$scope</span>)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$scope</span>.iframeLoadedCallBack = <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// do stuff</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;]);</span><br></pre></td></tr></table></figure></p>
+<p>在DOM中使用<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-controller</span>=<span class="value">"MyController"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">iframe</span> <span class="attribute">iframe-onload</span>=<span class="value">"iframeLoadedCallBack()"</span> <span class="attribute">src</span>=<span class="value">"..."</span>&gt;</span><span class="tag">&lt;/<span class="title">iframe</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><a href="http://stackoverflow.com/questions/15882326/angular-onload-function-on-an-iframe" target="_blank" rel="external">解决方案来源：Angular, onLoad function on an iFrame</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h1 id="iframe高度自适应">iframe高度自适应</h1><p>问题： 在angular项目中需要嵌入第三方页面，通过iframe来实现，但是嵌入的页面高度未知。</p>
+<p>解决方案：自定义一个angular指令，监听iframe的<code>onload</code>事件来获取iframe中内容的高度。</p>]]>
+    
+    </summary>
+    
+      <category term="Angular" scheme="http://xchb.work/tags/Angular/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[nodejs web应用代码热更新]]></title>
+    <link href="http://xchb.work/2016/09/01/nodejs-web%E5%BA%94%E7%94%A8%E4%BB%A3%E7%A0%81%E7%83%AD%E6%9B%B4%E6%96%B0/"/>
+    <id>http://xchb.work/2016/09/01/nodejs-web应用代码热更新/</id>
+    <published>2016-09-01T09:23:08.000Z</published>
+    <updated>2016-09-01T09:25:48.000Z</updated>
+    <content type="html"><![CDATA[<p>在用nodejs开发web程序过程中, 每次修改都需要重新启动一下服务, 虽然有pm2,forever等解决方案。<br>在fex上看见一个比较另类的解决方案——<a href="http://fex.baidu.com/blog/2015/05/nodejs-hot-swapping/" target="_blank" rel="external">Node.js Web应用代码热更新的另类思路</a></p>
+<p>在这里简单实现一下来解决开发过程中热启动的问题。</p>
+<p>首先需要重新包装一下nodejs提供的<code>require</code>方法。在require自己写的代码时,同时需要监听文件变化,当文件发生变化时,重新加载模块。</p>
+<a id="more"></a>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// wrapperRequire.js</span></span><br><span class="line"><span class="keyword">const</span> chokidar = <span class="built_in">require</span>(<span class="string">'chokidar'</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">cleanCache</span>(<span class="params">modulePath</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="built_in">module</span> = <span class="built_in">require</span>.cache[modulePath];</span><br><span class="line">    <span class="comment">// remove reference in module.parent</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">module</span>.parent) &#123;</span><br><span class="line">        <span class="built_in">module</span>.parent.children.splice(<span class="built_in">module</span>.parent.children.indexOf(<span class="built_in">module</span>), <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">require</span>.cache[modulePath] = <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">watchFile</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> absModulePath = <span class="built_in">require</span>.resolve(obj.modulePath);</span><br><span class="line">    chokidar.watch(absModulePath).on(<span class="string">'all'</span>, (event, path) =&gt; &#123;</span><br><span class="line">        cleanCache(absModulePath);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`file [<span class="subst">$&#123;path&#125;</span>] --&gt; [<span class="subst">$&#123;event&#125;</span>]`</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            obj.name = <span class="built_in">require</span>(obj.modulePath);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ex) &#123;</span><br><span class="line">            <span class="built_in">console</span>.error(<span class="string">'module update failed'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> (<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    !obj.ignore &amp;&amp; watchFile(obj);</span><br><span class="line">    obj.name = <span class="built_in">require</span>(obj.modulePath);</span><br><span class="line">    <span class="keyword">return</span> obj;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>由于使用node原生的fs.watch会出现文件变化监听不到的情况（其他一些问题见<a href="https://github.com/paulmillr/chokidar" target="_blank" rel="external">chokidar readme</a>）,<br>所以这里使用<code>chokidar</code>来实现对文件的监听。</p>
+<p>使用<code>wrapperRequire.js</code><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="keyword">const</span> wrapperRequire = <span class="built_in">require</span>(<span class="string">'./require'</span>);</span><br><span class="line"><span class="keyword">let</span> code = wrapperRequire(&#123;modulePath: <span class="string">'./code'</span>, <span class="string">'name'</span>: <span class="string">''</span>&#125;);</span><br><span class="line">setInterval(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(code.name);</span><br><span class="line">&#125;, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure></p>
+<p>测试文件 <code>code.js</code><br><figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span>.exports = <span class="symbol">'hello</span> world';</span><br></pre></td></tr></table></figure></p>
+<p>执行<code>main.js</code>然后更改<code>code.js</code>后也可以展示正确的结果。</p>
+<p>总结一下,以上实现的基础是:</p>
+<ol>
+<li>nodejs可以对require缓存的文件进行清空</li>
+<li>监听文件变化,然后重新require文件</li>
+<li>js函数中传递的Object参数是引用传递</li>
+</ol>
+<p>参考:<br>1.<a href="http://fex.baidu.com/blog/2015/05/nodejs-hot-swapping/" target="_blank" rel="external">Node.js Web应用代码热更新的另类思路</a><br>2.<a href="https://github.com/paulmillr/chokidar" target="_blank" rel="external">chokidar</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在用nodejs开发web程序过程中, 每次修改都需要重新启动一下服务, 虽然有pm2,forever等解决方案。<br>在fex上看见一个比较另类的解决方案——<a href="http://fex.baidu.com/blog/2015/05/nodejs-hot-swapping/">Node.js Web应用代码热更新的另类思路</a></p>
+<p>在这里简单实现一下来解决开发过程中热启动的问题。</p>
+<p>首先需要重新包装一下nodejs提供的<code>require</code>方法。在require自己写的代码时,同时需要监听文件变化,当文件发生变化时,重新加载模块。</p>]]>
+    
+    </summary>
+    
+      <category term="nodejs" scheme="http://xchb.work/tags/nodejs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[event那些事]]></title>
+    <link href="http://xchb.work/2016/07/25/event%E9%82%A3%E4%BA%9B%E4%BA%8B/"/>
+    <id>http://xchb.work/2016/07/25/event那些事/</id>
+    <published>2016-07-25T11:58:42.000Z</published>
+    <updated>2016-07-25T17:12:05.000Z</updated>
+    <content type="html"><![CDATA[<p>遇到一个问题：</p>
+<pre><code><span class="escape">`A</span><span class="escape">`标</span>签跳转前需要做一下登录判断，如果未登录则不让跳转，使用preventDefault发现阻止不了<span class="escape">`A</span><span class="escape">`标</span>签的跳转。
+</code></pre><p>解决方法：</p>
+<pre><code>加上stopImmediatePropagation才行。当然也可以把<span class="escape">`A</span><span class="escape">`标</span>签的<span class="escape">`h</span>ref<span class="escape">`属</span>性设置为空，通过js来控制跳转，但改动略大些，忽视。
+</code></pre><p>于是正好借此机会整理和收集一下JavaScript中的event事件。</p>
+<a id="more"></a>
+<h2 id="事件监听方式">事件监听方式</h2><p>js中实现事件监听方式，以<code>click</code>事件为例，可以有直接设置元素的<code>onclick</code>属性：<br>    <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 直接设置元素的onclick属性 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">button</span> <span class="attribute">id</span>=<span class="value">"btn1"</span>&gt;</span>js绑定事件测试按钮1<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript"></span><br><span class="line">    <span class="built_in">document</span>.querySelector(<span class="string">'#btn1'</span>).onclick = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">        alert(<span class="string">'js绑定事件方式1'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<pre><code>或者用<span class="code">`addEventListener`</span>监听<span class="code">`click`</span>：
+<span class="xml"><span class="comment"><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 用addEventListener监听click --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">button</span> <span class="attribute">id</span>=<span class="value">"btn2"</span>&gt;</span>js绑定事件测试按钮1<span class="tag">&lt;/<span class="title">button</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript"></span><br><span class="line">    <span class="built_in">document</span>.querySelector(<span class="string">'#btn2'</span>).addEventListener(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">        alert(<span class="string">'js绑定事件方式2'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure></span></span>
+
+提到事件绑定，解绑事件也事件当然也可以有，具体请可以查看[<span class="link_label">Demo</span>](<span class="link_url">/event.html</span>)。至于像<span class="code">`attachEvent`</span>这类，这里不多讨论。
+
+比较推荐的绑定方式是<span class="code">`addEventListener`</span>, 这种方式可以给DOM元素添加不止一个事件处理函数，而且可以控制事件在捕获或冒泡阶段触发。
+
+PS：addEventListener可以接受三个参数，其语法是<span class="code">`target.addEventListener(type, listener[, useCapture]);`</span>，第三个参数标识是在捕获阶段触发还是在冒泡阶段，默认值为<span class="code">`false`</span>标识在冒泡阶段触发
+</code></pre><h2 id="事件捕获或冒泡">事件捕获或冒泡</h2><p>这里简要说明一下W3C的事件模型：<br><figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">                 |<span class="string"> </span>|<span class="string">  / \</span><br><span class="line">-----------------</span>|<span class="string"> </span>|<span class="string">--</span>|<span class="string"> </span>|<span class="string">-----------------</span><br><span class="line"></span>|<span class="string"> element1       </span>|<span class="string"> </span>|<span class="string">  </span>|<span class="string"> </span>|<span class="string">                </span>|</span><br><span class="line">|<span class="string">   -------------</span>|<span class="string"> </span>|<span class="string">--</span>|<span class="string"> </span>|<span class="string">-----------     </span>|</span><br><span class="line">|<span class="string">   </span>|<span class="string">element2    \ /  </span>|<span class="string"> </span>|<span class="string">          </span>|<span class="string">     </span>|</span><br><span class="line">|<span class="string">   --------------------------------     </span>|</span><br><span class="line">|<span class="string">        W3C event model                 </span>|</span><br><span class="line">------------------------------------------</span><br></pre></td></tr></table></figure></p>
+<p>假设给元素添加一下事件：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">element1.<span class="function"><span class="title">addEventListener</span><span class="params">(<span class="string">'click'</span>,doSomething2,true)</span></span></span><br><span class="line">element2.<span class="function"><span class="title">addEventListener</span><span class="params">(<span class="string">'click'</span>,doSomething,false)</span></span></span><br></pre></td></tr></table></figure></p>
+<p>当点击element2时，首先会点击事件开始于捕获阶段，触发element1的事件处理函数doSomething2，然后捕获阶段没有可执行的的事件处理函数了，接着开始进入冒泡阶段，触发element2的事件处理函数doSomething。</p>
+<p>其他一些情况请参考<a href="http://www.quirksmode.org/js/events_order.html" target="_blank" rel="external">Event order</a></p>
+<h2 id="事件阻止">事件阻止</h2><p>事件阻止有三个方法： preventDefault，stopPropagation，stopImmediatePropagation。</p>
+<ol>
+<li>preventDefault： 阻止DOM元素的默认行为，例如阻止表单<code>type=&quot;submit&quot;</code>的button或input的提交表单行为。</li>
+<li>stopPropagation： 阻止事件的传播（冒泡）。</li>
+<li>stopImmediatePropagation： 阻止其他事件处理函数执行，并也会阻止事件的传播。</li>
+<li>事件处理函数中使用 <code>return false</code>：效果等价于 preventDefault + stopPropagation (据说是jQuery中实现的，原生JS中并没有什么用，测试环境是chrome 52)。</li>
+</ol>
+<p>具体请查看<a href="/event.html">Demo</a></p>
+<p>PS: 重点不是本文所写，而是以下参考的文章。</p>
+<h2 id="参考">参考</h2><ol>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener" target="_blank" rel="external">EventTarget.addEventListener</a></li>
+<li><a href="https://codeplanet.io/preventdefault-vs-stoppropagation-vs-stopimmediatepropagation/" target="_blank" rel="external">PREVENTDEFAULT VS. STOPPROPAGATION VS. STOPIMMEDIATEPROPAGATION</a></li>
+<li><a href="http://stackoverflow.com/questions/10712219/remove-onclick-event-from-img-tag" target="_blank" rel="external">Remove onclick event from img tag</a></li>
+<li><a href="http://stackoverflow.com/questions/5302903/jquery-event-stopimmediatepropagation-vs-return-false" target="_blank" rel="external">jquery: event.stopImmediatePropagation() vs return false</a></li>
+<li><a href="http://fuelyourcoding.com/jquery-events-stop-misusing-return-false/" target="_blank" rel="external">jQuery Events: Stop (Mis)Using Return False</a></li>
+<li><a href="http://www.quirksmode.org/js/events_order.html" target="_blank" rel="external">Event order</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>遇到一个问题：</p>
+<pre><code><span class="escape">`A</span><span class="escape">`标</span>签跳转前需要做一下登录判断，如果未登录则不让跳转，使用preventDefault发现阻止不了<span class="escape">`A</span><span class="escape">`标</span>签的跳转。
+</code></pre><p>解决方法：</p>
+<pre><code>加上stopImmediatePropagation才行。当然也可以把<span class="escape">`A</span><span class="escape">`标</span>签的<span class="escape">`h</span>ref<span class="escape">`属</span>性设置为空，通过js来控制跳转，但改动略大些，忽视。
+</code></pre><p>于是正好借此机会整理和收集一下JavaScript中的event事件。</p>]]>
+    
+    </summary>
+    
+      <category term="JS" scheme="http://xchb.work/tags/JS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[浏览器工作原理]]></title>
+    <link href="http://xchb.work/2016/07/21/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/"/>
+    <id>http://xchb.work/2016/07/21/浏览器工作原理/</id>
+    <published>2016-07-21T12:06:49.000Z</published>
+    <updated>2016-07-22T02:41:01.000Z</updated>
+    <content type="html"><![CDATA[<p>整理和收集一下浏览器渲染原理。</p>
+<h2 id="解析和展示html流程">解析和展示html流程</h2><ol>
+<li>首先下载html文件</li>
+<li>解析html，构建dom树</li>
+<li>和css结合生成渲染树</li>
+<li>绘制并展示页面</li>
+</ol>
+<a id="more"></a>
+<p>图示：<br><img src="http://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/flow.png" alt="渲染流程"></p>
+<p><img src="http://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/webkitflow.png" alt="Webkit"></p>
+<p><img src="http://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/image008.jpg" alt="Gecko"></p>
+<p><a href="http://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/" target="_blank" rel="external">图片来源:http://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/</a></p>
+<h2 id="CSSOM和DOM组合_-&gt;_render_tree_（渲染树）">CSSOM和DOM组合 -&gt; render tree （渲染树）</h2><p><img src="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/images/render-tree-construction.png" alt="combile CSSOM and DOM"><br><a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction" target="_blank" rel="external">图片来源：https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction</a></p>
+<h2 id="相关文章：">相关文章：</h2><ol>
+<li><a href="http://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/" target="_blank" rel="external">浏览器工作原理</a></li>
+<li><a href="http://taligarsiel.com/Projects/howbrowserswork1.htm" target="_blank" rel="external">How browsers work</a></li>
+<li><a href="https://css-tricks.com/efficiently-rendering-css/" target="_blank" rel="external">EfficientlyRendering CSS</a></li>
+<li><a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction" target="_blank" rel="external">Render-tree construction, layout, and paint</a></li>
+<li><a href="http://calendar.perfplanet.com/2011/css-selector-performance-has-changed-for-the-better/" target="_blank" rel="external">CSS Selector Performance has changed! (For the better)</a></li>
+<li><a href="https://dl.dropboxusercontent.com/u/39519/talks/cssperf/index.html" target="_blank" rel="external">CSS PERFORMANCE</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Style_System_Overview" target="_blank" rel="external">Style System Overview</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>整理和收集一下浏览器渲染原理。</p>
+<h2 id="解析和展示html流程">解析和展示html流程</h2><ol>
+<li>首先下载html文件</li>
+<li>解析html，构建dom树</li>
+<li>和css结合生成渲染树</li>
+<li>绘制并展示页面</li>
+</ol>]]>
+    
+    </summary>
+    
+      <category term="Web" scheme="http://xchb.work/tags/Web/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[React-Todo示例]]></title>
+    <link href="http://xchb.work/2016/05/25/React-Todo%E7%A4%BA%E4%BE%8B/"/>
+    <id>http://xchb.work/2016/05/25/React-Todo示例/</id>
+    <published>2016-05-25T12:47:25.000Z</published>
+    <updated>2016-05-26T06:36:14.000Z</updated>
+    <content type="html"><![CDATA[<p>近两天事情较少，准备做一个书单列表，初始阶段和之前看过的Todo基本相似。正好很久没看React，感觉好生疏，准备结合ES6重新写一个React的Todo示例。参考的源码和样式来源于<a href="http://todomvc.com/examples/react/#/" target="_blank" rel="external">todomvc</a></p>
+<a id="more"></a>
+<h3 id="样式">样式</h3><p>直接复用todomvc的，这个样式很简洁，同时该网站又把相关的css都放在同一个css文件中，直接下载下来就可以了。</p>
+<h3 id="源码">源码</h3><p>参考其<a href="https://github.com/tastejs/todomvc/tree/gh-pages/examples/react" target="_blank" rel="external">示例源码</a>,<br>但是由于其源码用的不是ES6，同时用的是IEEF来做的模块化，所以需要改造一下。</p>
+<p>改造点：</p>
+<ol>
+<li>在ES6中，可以直接用<code>class</code>扩展<code>React.Component</code>(注意大写首字母，跳过这个坑)</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import React from 'react';</span><br><span class="line"></span><br><span class="line">export default class TodoFooter extends React.Component &#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return (</span><br><span class="line">            <span class="tag">&lt;<span class="title">footer</span> <span class="attribute">className</span>=<span class="value">"footer"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">span</span> <span class="attribute">className</span>=<span class="value">"todo-count"</span>&gt;</span>&#123;this.props.count&#125;<span class="tag">&lt;/<span class="title">span</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">ul</span> <span class="attribute">className</span>=<span class="value">"filters"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">li</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">""</span>&gt;</span>All<span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">li</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">""</span>&gt;</span>Active<span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">li</span>&gt;</span><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">""</span>&gt;</span>Complete<span class="tag">&lt;/<span class="title">a</span>&gt;</span><span class="tag">&lt;/<span class="title">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">footer</span>&gt;</span></span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个是改造TodoFooter的代码。<br>在其他模块引用时，只需要<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> TodoFooter <span class="keyword">from</span> <span class="string">'./todoFooter.jsx'</span>;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li><p><code>classNames</code> 模块已经单独抽出来维护了，<a href="https://github.com/JedWatson/classnames" target="_blank" rel="external">classnames的github地址</a></p>
+</li>
+<li><p>ES6中，React不会默认绑定<code>this</code>，所以需要手动绑定一下</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="type">React</span> from <span class="symbol">'reac</span>t';</span><br><span class="line"><span class="keyword">import</span> classNames from <span class="symbol">'classname</span>s';</span><br><span class="line"></span><br><span class="line">export <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">TodoItem</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">React</span>.<span class="title">Component</span> &#123;</span></span><br><span class="line">    constructor(props) &#123;</span><br><span class="line">        <span class="keyword">super</span>(props);</span><br><span class="line">        <span class="keyword">this</span>.state = &#123;</span><br><span class="line">            editText: <span class="keyword">this</span>.props.todo.title</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">this</span>.id = <span class="keyword">this</span>.props.itemId;</span><br><span class="line">        <span class="keyword">this</span>.handleSubmit = <span class="keyword">this</span>.handleSubmit.bind(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">this</span>.handleChange = <span class="keyword">this</span>.handleChange.bind(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">this</span>.handleEdit = <span class="keyword">this</span>.handleEdit.bind(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">this</span>.handleKeyDown  = <span class="keyword">this</span>.handleKeyDown.bind(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">this</span>.onToggle = <span class="keyword">this</span>.onToggle.bind(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">this</span>.onDestroy = <span class="keyword">this</span>.onDestroy.bind(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    handleSubmit() &#123;</span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">val</span> = <span class="keyword">this</span>.state.editText.trim();</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">val</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.props.onDestroy(<span class="keyword">this</span>.id);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.props.onSave(<span class="keyword">this</span>.id, <span class="keyword">val</span>);</span><br><span class="line">            <span class="keyword">this</span>.setState(&#123;editText: <span class="keyword">val</span>&#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    handleEdit() &#123;</span><br><span class="line">        <span class="keyword">this</span>.props.onEdit(<span class="keyword">this</span>.id);</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;editText: <span class="keyword">this</span>.props.todo.title&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    handleKeyDown(e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (e.which === <span class="number">27</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.setState(&#123;editText: <span class="keyword">this</span>.props.todo.title&#125;);</span><br><span class="line">            <span class="keyword">this</span>.props.onCancel(event);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (e.which === <span class="number">13</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.handleSubmit(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    handleChange(e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.props.editing) &#123;</span><br><span class="line">            <span class="keyword">this</span>.setState(&#123;editText: e.target.value&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    onToggle() &#123;</span><br><span class="line">        <span class="keyword">this</span>.props.onToggle(<span class="keyword">this</span>.id);</span><br><span class="line">    &#125;</span><br><span class="line">    onDestroy() &#123;</span><br><span class="line">        <span class="keyword">this</span>.props.onDestroy(<span class="keyword">this</span>.id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render() &#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            &lt;li className=&#123;classNames(&#123;</span><br><span class="line">                completed: <span class="keyword">this</span>.props.todo.completed,</span><br><span class="line">                editing: <span class="keyword">this</span>.props.editing</span><br><span class="line">            &#125;)&#125;</span><br><span class="line">            &gt;</span><br><span class="line">                &lt;div className=<span class="string">"view"</span>&gt;</span><br><span class="line">                    &lt;input</span><br><span class="line">                        className=<span class="string">"toggle"</span></span><br><span class="line">                        <span class="class"><span class="keyword">type</span>=</span><span class="string">"checkbox"</span></span><br><span class="line">                        checked=&#123;<span class="keyword">this</span>.props.todo.completed&#125;</span><br><span class="line">                        onChange=&#123;<span class="keyword">this</span>.onToggle&#125;</span><br><span class="line">                    /&gt;</span><br><span class="line">                    &lt;label onDoubleClick=&#123;<span class="keyword">this</span>.handleEdit&#125;&gt;</span><br><span class="line">                        &#123;<span class="keyword">this</span>.props.todo.title&#125;</span><br><span class="line">                    &lt;/label&gt;</span><br><span class="line">                    &lt;button className=<span class="string">"destroy"</span> onClick=&#123;<span class="keyword">this</span>.onDestroy&#125;&gt;&lt;/button&gt;</span><br><span class="line">                &lt;/div&gt;</span><br><span class="line">                &lt;input</span><br><span class="line">                    ref=<span class="string">"editField"</span></span><br><span class="line">                    className=<span class="string">"edit"</span></span><br><span class="line">                    value=&#123;<span class="keyword">this</span>.state.editText&#125;</span><br><span class="line">                    onBlur=&#123;<span class="keyword">this</span>.handleSubmit&#125;</span><br><span class="line">                    onChange=&#123;<span class="keyword">this</span>.handleChange&#125;</span><br><span class="line">                    onKeyDown=&#123;<span class="keyword">this</span>.handleKeyDown&#125;</span><br><span class="line">                /&gt;</span><br><span class="line">            &lt;/li&gt;</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>事件传递参数，用<code>bind</code></p>
+</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">onClick</span>=<span class="value">&#123;this.props.onFilter.bind(this,</span> <span class="attribute">ALL_TODOS</span>)&#125; <span class="attribute">className</span>=<span class="value">&#123;classNames(&#123;selected:</span> <span class="attribute">active</span> =<span class="value">==</span> <span class="attribute">ALL_TODOS</span>&#125;)&#125;&gt;</span>All<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>近两天事情较少，准备做一个书单列表，初始阶段和之前看过的Todo基本相似。正好很久没看React，感觉好生疏，准备结合ES6重新写一个React的Todo示例。参考的源码和样式来源于<a href="http://todomvc.com/examples/react/#/">todomvc</a></p>]]>
+    
+    </summary>
+    
+      <category term="React" scheme="http://xchb.work/tags/React/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[图片加载]]></title>
+    <link href="http://xchb.work/2016/05/23/%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD/"/>
+    <id>http://xchb.work/2016/05/23/图片加载/</id>
+    <published>2016-05-23T03:55:34.000Z</published>
+    <updated>2016-05-23T05:46:37.000Z</updated>
+    <content type="html"><![CDATA[<p>随着网页内容越来越丰富，页面的图片也越来越多，导致页面加载越来越慢。针对页面的优化，图片加载是一个重点。常见的优化方案有图片预加载，图片惰性加载。或者针对图片格式做一些优化，例如使用webp之类的。这里主要关注图片的加载方式。</p>
+<a id="more"></a>
+<h2 id="图片预加载">图片预加载</h2><h3 id="背景">背景</h3><p>图片的加载速度往往影响着网站整体的用户体验，尤其对于包含大量图片的网站。对图片进行预加载，不失为一个高效的解决方案。</p>
+<h3 id="解决方案">解决方案</h3><p>使用CSS3、JavaScript、Ajax实现图片预加载</p>
+<h3 id="具体实现">具体实现</h3><ol>
+<li><a href="https://perishablepress.com/3-ways-preload-images-css-javascript-ajax/" target="_blank" rel="external">3 Ways to Preload Images with CSS, JavaScript, or Ajax</a></li>
+<li><a href="http://www.csdn.net/article/2013-10-15/2817187-3-ways-preload-images-css-javascript-ajax" target="_blank" rel="external">利用CSS、JavaScript及Ajax实现图片预加载的三大方法</a></li>
+</ol>
+<h2 id="图片惰性加载">图片惰性加载</h2><h3 id="背景-1">背景</h3><p>页面图片较多，影响加载速度，而且很多时候，页面加载完了，用户却不会滑动到页面最下面，也就是说加载出来的图片，用户更本就没去看，造成资源浪费的同时也使得页面加载变慢。</p>
+<h3 id="解决方案-1">解决方案</h3><p>按需加载图片，如果用户滚动到图片位置，则加载图片。</p>
+<h3 id="实现原理">实现原理</h3><ol>
+<li>给<code>img</code>标签设置src为一个loading图标，然后把实际的图片地址存储到其他自定义属性中；</li>
+<li>监听页面滚动事件，如果页面滚动到图片区域，则替换src为图片的视觉地址。</li>
+</ol>
+<p>示例：</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img data-original=<span class="symbol">'actual</span>.jpg' src=<span class="symbol">'loading</span>.gif'/&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="具体实现-1">具体实现</h3><ol>
+<li>参考<a href="http://www.cnblogs.com/zichi/p/5021697.html" target="_blank" rel="external">教你实现图片的惰性加载</a></li>
+<li>使用jQuery的<a href="https://plugins.jquery.com/lazyload/" target="_blank" rel="external">惰性加载库（lazyload）</a>, <a href="https://github.com/tuupola/jquery_lazyload" target="_blank" rel="external">github地址</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>随着网页内容越来越丰富，页面的图片也越来越多，导致页面加载越来越慢。针对页面的优化，图片加载是一个重点。常见的优化方案有图片预加载，图片惰性加载。或者针对图片格式做一些优化，例如使用webp之类的。这里主要关注图片的加载方式。</p>]]>
+    
+    </summary>
+    
+      <category term="HTML" scheme="http://xchb.work/tags/HTML/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Meta 整理]]></title>
+    <link href="http://xchb.work/2016/05/17/Meta-%E6%95%B4%E7%90%86/"/>
+    <id>http://xchb.work/2016/05/17/Meta-整理/</id>
+    <published>2016-05-17T04:28:47.000Z</published>
+    <updated>2016-05-17T06:10:10.000Z</updated>
+    <content type="html"><![CDATA[<h1 id="基本属性值">基本属性值</h1><p>meta的意义取决其属性：</p>
+<ol>
+<li>name： 文档级别的元数据，作用于整个页面。</li>
+<li>http-equiv： 程序指令，一般用于告诉服务器页面的一些特殊要求。</li>
+<li>charset： 设置页面的字符</li>
+<li>itemprop: 自定义的元数据</li>
+</ol>
+<p>如果设置了 <code>name</code> 或者 <code>http-equiv</code>，可以用<code>content</code>指定相关的内容</p>
+<a id="more"></a>
+<h1 id="一_name">一 name</h1><ol>
+<li><p>author: 定义页面的作者</p>
+ <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta <span class="property">name</span>=<span class="string">"author"</span> content=<span class="string">"author name"</span> /&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>description: 页面简短精确的描述，有些浏览器会以此作为收藏时的描述，不超过150字</p>
+ <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta <span class="property">name</span>=<span class="string">"description"</span> content=<span class="string">"descriptions"</span> /&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>keywords：描述页面的关键字, 多个关键字用 逗号分割</p>
+ <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta <span class="property">name</span>=<span class="string">"keywords"</span> content=<span class="string">"page keyword"</span> /&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>viewport: 窗口视图大小设置，适用于移动端开发。</p>
+<p>content可以包含的属性：</p>
+<ul>
+<li>width: 设置视图大小，数值/device-width</li>
+<li>height： 设置视图高度，数值/device-height</li>
+<li>initial-scale：初始缩放，值在0.0~10.0间</li>
+<li>maximum-scale: 最大缩放比例，值在0.0~10.0间</li>
+<li>minimum-scale: 最小缩放比例，值在0.0~10.0间</li>
+<li>user-scalable: 布尔值，是否允许缩放页面</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta <span class="property">name</span>=<span class="string">"viewport"</span> content=<span class="string">"width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"</span>&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>format-detection: 格式检测</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta  <span class="property">name</span>=<span class="string">"format-detection"</span> content=<span class="string">"telephone=no"</span> /&gt;</span><br><span class="line">&lt;meta  <span class="property">name</span>=<span class="string">"format-detection"</span> content=<span class="string">"email=no"</span> /&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="二_http-equiv">二 http-equiv</h1><ol>
+<li><p>refresh: 页面重新加载或者重定向</p>
+<ul>
+<li>如果content只有一个数值，表示隔多少秒重新加载页面</li>
+<li><p>如果content格式是<code>3;url=http://www.baidu.com</code>表示隔3s重定向到百度</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"refresh"</span> <span class="attribute">content</span>=<span class="value">"4"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"refresh"</span> <span class="attribute">content</span>=<span class="value">"3;url=http://www.baidu.com"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>default-style: 页面默认样式，content是css的链接，同<code>&lt;link&gt;</code>的<code>href</code>保持一致</p>
+</li>
+</ol>
+<h1 id="三_其他一下meta头">三 其他一下meta头</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--隐藏状态栏/设置状态栏颜色, content的值为default | black | black-translucent--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"apple-mobile-web-app-status-bar-style"</span> <span class="attribute">content</span>=<span class="value">"black-translucent"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"apple-mobile-web-app-title"</span> <span class="attribute">content</span>=<span class="value">"标题"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"HandheldFriendly"</span> <span class="attribute">content</span>=<span class="value">"true"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 微软的老式浏览器 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"MobileOptimized"</span> <span class="attribute">content</span>=<span class="value">"320"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- uc强制竖屏 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"screen-orientation"</span> <span class="attribute">content</span>=<span class="value">"portrait"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- QQ强制竖屏 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"x5-orientation"</span> <span class="attribute">content</span>=<span class="value">"portrait"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- UC强制全屏 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"full-screen"</span> <span class="attribute">content</span>=<span class="value">"yes"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- QQ强制全屏 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"x5-fullscreen"</span> <span class="attribute">content</span>=<span class="value">"true"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- UC应用模式 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"browsermode"</span> <span class="attribute">content</span>=<span class="value">"application"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- QQ应用模式 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"x5-page-mode"</span> <span class="attribute">content</span>=<span class="value">"app"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- windows phone 点击无高光 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">name</span>=<span class="value">"msapplication-tap-highlight"</span> <span class="attribute">content</span>=<span class="value">"no"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"X-UA-Compatible"</span> <span class="attribute">content</span>=<span class="value">"IE=edge,chrome=1"</span> /&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 关于X-UA-Compatible --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"X-UA-Compatible"</span> <span class="attribute">content</span>=<span class="value">"IE=6"</span> &gt;</span><span class="comment">&lt;!-- 使用IE6 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"X-UA-Compatible"</span> <span class="attribute">content</span>=<span class="value">"IE=7"</span> &gt;</span><span class="comment">&lt;!-- 使用IE7 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"X-UA-Compatible"</span> <span class="attribute">content</span>=<span class="value">"IE=8"</span> &gt;</span><span class="comment">&lt;!-- 使用IE8 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 转码申明：用百度打开网页可能会对其进行转码（比如贴广告），避免转码可添加如下meta --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"Cache-Control"</span> <span class="attribute">content</span>=<span class="value">"no-siteapp"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="四_参考">四 参考</h1><ol>
+<li><a href="http://get.ftqq.com/6483.get" target="_blank" rel="external">常用meta整理</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#attr-content" target="_blank" rel="external">MDN <meta></a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h1 id="基本属性值">基本属性值</h1><p>meta的意义取决其属性：</p>
+<ol>
+<li>name： 文档级别的元数据，作用于整个页面。</li>
+<li>http-equiv： 程序指令，一般用于告诉服务器页面的一些特殊要求。</li>
+<li>charset： 设置页面的字符</li>
+<li>itemprop: 自定义的元数据</li>
+</ol>
+<p>如果设置了 <code>name</code> 或者 <code>http-equiv</code>，可以用<code>content</code>指定相关的内容</p>]]>
+    
+    </summary>
+    
+      <category term="HTML" scheme="http://xchb.work/tags/HTML/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[一键收藏网址至Github]]></title>
+    <link href="http://xchb.work/2016/03/04/%E4%B8%80%E9%94%AE%E6%94%B6%E8%97%8F%E7%BD%91%E5%9D%80%E8%87%B3Github/"/>
+    <id>http://xchb.work/2016/03/04/一键收藏网址至Github/</id>
+    <published>2016-03-04T12:18:22.000Z</published>
+    <updated>2016-03-06T00:43:57.000Z</updated>
+    <content type="html"><![CDATA[<p>在网上看见一个用Ruby On Rail写了一个一键收藏网页文章至github上的文章（<a href="http://www.jianshu.com/p/19d2f3a3b5d8" target="_blank" rel="external">点我查看</a>）,觉得很想法，于是乎，我也想用nodejs写一个。</p>
+<h3 id="功能描述">功能描述</h3><ol>
+<li>chrome扩展，发送当前标签页的标题和网址</li>
+<li>nodejs后端服务器，获取chrome发送的数据，保存至markdown文件中</li>
+<li>定时提交数据至github上</li>
+</ol>
+<a id="more"></a>
+<h3 id="chrome扩展实现">chrome扩展实现</h3><p>chrome扩展实现：</p>
+<ol>
+<li>点击扩展图标时，获取当前标签页的标题和网址，然后将其发送至后端。</li>
+<li>映射该功能至标签页面右键菜单，即生成右键菜单的快捷方式。</li>
+<li>将发送成功的数据保存至本地，防止多次重复提交。</li>
+<li>定时清理保存至浏览器的本地数据，因而chrome的storage是有大小限制的。</li>
+<li>在图标上显示badge，来标识是否发送成功或者发送失败。</li>
+</ol>
+<p>具体实现见(<a href="https://github.com/swxy/bookmarks" target="_blank" rel="external">github源码中markToGithub目录</a>)。</p>
+<h3 id="nodej后端实现">nodej后端实现</h3><p>后端主要实现：</p>
+<ol>
+<li>获取扩展发送的网页标题和网址。</li>
+<li>保存标题和网址至markdown文件中。</li>
+<li>定时提交数据至github上。</li>
+</ol>
+<p>为了可以提交数据至github上，首先需要在github上先建一个项目专门用于存放书签，然后将其复制一份到本地，为了省事，直接在该目录下执行后端代码。</p>
+<p>在保存书签至markdown文件时，按照每月共用一个文件的方式组织，文件名类似于2016-3.md，然后每个文件中，又按照具体的日期倒序排列收藏。这就要求我们在读取文件时，需要一行一行的读取，以便在正确的位置插入数据。</p>
+<p>具体实现见(<a href="https://github.com/swxy/bookmarks" target="_blank" rel="external">github源码中的bookmark.js</a>), 或者见附录。</p>
+<h3 id="附录">附录</h3><p>chrome 扩展的配置文件：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  "<span class="attribute">manifest_version</span>": <span class="value"><span class="number">2</span></span>,</span><br><span class="line">  "<span class="attribute">name</span>": <span class="value"><span class="string">"markToGithub"</span></span>,</span><br><span class="line">  "<span class="attribute">description</span>": <span class="value"><span class="string">"保存书签到github上"</span></span>,</span><br><span class="line">  "<span class="attribute">version</span>": <span class="value"><span class="string">"1.0"</span></span>,</span><br><span class="line">  "<span class="attribute">browser_action</span>": <span class="value">&#123;</span><br><span class="line">    "<span class="attribute">default_icon</span>": <span class="value"><span class="string">"book.png"</span></span><br><span class="line">  </span>&#125;</span>,</span><br><span class="line">  "<span class="attribute">icons</span>": <span class="value">&#123;</span><br><span class="line">    "<span class="attribute">16</span>": <span class="value"><span class="string">"book.png"</span></span>,</span><br><span class="line">    "<span class="attribute">24</span>": <span class="value"><span class="string">"book_24.png"</span></span><br><span class="line">  </span>&#125;</span>,</span><br><span class="line">  "<span class="attribute">background</span>": <span class="value">&#123;</span><br><span class="line">    "<span class="attribute">scripts</span>": <span class="value">[<span class="string">"tab.js"</span>]</span>,</span><br><span class="line">    "<span class="attribute">persistent</span>": <span class="value"><span class="literal">false</span></span><br><span class="line">  </span>&#125;</span>,</span><br><span class="line">  "<span class="attribute">permissions</span>": <span class="value">[</span><br><span class="line">    <span class="string">"activeTab"</span>,</span><br><span class="line">    <span class="string">"contextMenus"</span>,</span><br><span class="line">    <span class="string">"tabs"</span>,</span><br><span class="line">    <span class="string">"http://*/"</span>,</span><br><span class="line">    <span class="string">"storage"</span></span><br><span class="line">  ]</span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure></p>
+<p>后端代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">"use strict"</span></span><br><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"><span class="keyword">const</span> url = <span class="built_in">require</span>(<span class="string">'url'</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">const</span> readline = <span class="built_in">require</span>(<span class="string">'readline'</span>);</span><br><span class="line"><span class="keyword">const</span> querystring = <span class="built_in">require</span>(<span class="string">'querystring'</span>);</span><br><span class="line"><span class="keyword">const</span> spawnSync = <span class="built_in">require</span>(<span class="string">'child_process'</span>).spawnSync;</span><br><span class="line"></span><br><span class="line">http.createServer((req, res) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> urlData = url.parse(req.url);</span><br><span class="line">    <span class="comment">//console.dir(urlData);</span></span><br><span class="line">    <span class="keyword">let</span> queryObj = querystring.parse(urlData.query);</span><br><span class="line">    <span class="built_in">console</span>.dir(queryObj);</span><br><span class="line">    queryObj.title &amp;&amp; queryObj.url &amp;&amp; writeToMarKdownDoc(queryObj);</span><br><span class="line">    res.writeHead(<span class="number">200</span>, &#123;<span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>&#125;);</span><br><span class="line">    res.end(<span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">        code: <span class="number">0</span>,</span><br><span class="line">        msg : <span class="string">'success'</span></span><br><span class="line">    &#125;));</span><br><span class="line">&#125;).listen(<span class="number">3175</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeFilename</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> fileName = <span class="string">'README.md'</span>;</span><br><span class="line">    <span class="keyword">let</span> name = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">let</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">    <span class="keyword">if</span> (date.getDate() === <span class="number">1</span>) &#123;</span><br><span class="line">        name = data.getFullYear() + <span class="string">'_'</span> + data.getMonth() + <span class="string">'.md'</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> state = fs.state(name);</span><br><span class="line">            !state.isFile() &amp;&amp; fs.renameSync(fileName, name);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (e)&#123;</span><br><span class="line">            fs.renameSync(fileName, name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> fileName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isNewFile</span>(<span class="params">filename</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> fileState = fs.statSync(filename);</span><br><span class="line">        <span class="keyword">let</span> result = fileState.isFile();</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">        <span class="built_in">console</span>.error(e);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">writeToFile</span>(<span class="params">filename, data, title</span>) </span>&#123;</span><br><span class="line">    fs.writeFile(filename, data, (err) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (err) <span class="built_in">console</span>.err(err);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'saved '</span> + filename);</span><br><span class="line">        <span class="comment">//pushToGit(title);</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">writeToMarKdownDoc</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> fileName = changeFilename();</span><br><span class="line">    <span class="keyword">let</span> data = [];</span><br><span class="line">    <span class="keyword">let</span> inserted = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">const</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">    <span class="keyword">if</span> (!isNewFile(fileName)) &#123;</span><br><span class="line">        data.push(<span class="string">`### <span class="subst">$&#123;date.getFullYear()&#125;</span>-<span class="subst">$&#123;date.getMonth()+1&#125;</span>-<span class="subst">$&#123;date.getDate()&#125;</span>&lt;br /&gt;`</span>)</span><br><span class="line">        data.push(<span class="string">`+ [<span class="subst">$&#123;obj.title&#125;</span>](<span class="subst">$&#123;obj.url&#125;</span>)&lt;br /&gt;\n`</span>);</span><br><span class="line">        writeToFile(fileName, data.join(<span class="string">'\n'</span>), obj.title);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> rl = readline.createInterface(&#123;</span><br><span class="line">        input: fs.createReadStream(fileName)</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    rl.on(<span class="string">'line'</span>, (line) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (!inserted &amp;&amp; line.startsWith(<span class="string">'###'</span>)) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> data_str = line.match(<span class="regexp">/\d&#123;4&#125;-\d&#123;1,2&#125;-\d&#123;1,2&#125;/</span>)[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">if</span> (date_str &amp;&amp; (<span class="keyword">new</span> <span class="built_in">Date</span>(data_str).getDate() === date.getDate())) &#123;</span><br><span class="line">                data.push(line);</span><br><span class="line">                data.push(<span class="string">`+ [<span class="subst">$&#123;obj.title&#125;</span>](<span class="subst">$&#123;obj.url&#125;</span>)&lt;br /&gt;`</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                data.push(<span class="string">`### <span class="subst">$&#123;date.getFullYear()&#125;</span>-<span class="subst">$&#123;date.getMonth()+1&#125;</span>-<span class="subst">$&#123;date.getDate()&#125;</span>&lt;br /&gt;`</span>)</span><br><span class="line">                data.push(<span class="string">`+ [<span class="subst">$&#123;obj.title&#125;</span>](<span class="subst">$&#123;obj.url&#125;</span>)&lt;br /&gt;\n`</span>);</span><br><span class="line">                data.push(line);</span><br><span class="line">            &#125;</span><br><span class="line">            inserted = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            data.push(line);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    rl.on(<span class="string">'close'</span>, () =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (!inserted) &#123; <span class="comment">//新建的文件</span></span><br><span class="line">            data.push(<span class="string">`### <span class="subst">$&#123;date.getFullYear()&#125;</span>-<span class="subst">$&#123;date.getMonth()+1&#125;</span>-<span class="subst">$&#123;date.getDate()&#125;</span>&lt;br /&gt;`</span>)</span><br><span class="line">            data.push(<span class="string">`+ [<span class="subst">$&#123;obj.title&#125;</span>](<span class="subst">$&#123;obj.url&#125;</span>)&lt;br /&gt;\n`</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        writeToFile(fileName, data.join(<span class="string">'\n'</span>), obj.title);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pushToGit</span>(<span class="params">title</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> title = title || <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">var</span> cmds = [</span><br><span class="line">        [<span class="string">'git'</span>, [<span class="string">'add'</span>, <span class="string">'.'</span>]],</span><br><span class="line">        [<span class="string">'git'</span>, [<span class="string">'commit'</span>, <span class="string">'-am'</span>, <span class="string">`"add <span class="subst">$&#123;title&#125;</span>"`</span>]],</span><br><span class="line">        [<span class="string">'git'</span>, [<span class="string">'pull'</span>, <span class="string">'--rebase'</span>]],</span><br><span class="line">        [<span class="string">'git'</span>, [<span class="string">'push'</span>, <span class="string">'origin'</span>, <span class="string">'master'</span>]]</span><br><span class="line">    ];</span><br><span class="line">    cmds.forEach((cmd) =&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> result = spawnSync(cmd[<span class="number">0</span>], cmd[<span class="number">1</span>]);</span><br><span class="line">        <span class="built_in">console</span>.log(result.output.join(<span class="string">'\n'</span>));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'push to github'</span>);</span><br><span class="line">    pushToGit(<span class="keyword">new</span> <span class="built_in">Date</span>().toString());</span><br><span class="line">&#125;, <span class="number">1000</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'server start at 3175'</span>);</span><br></pre></td></tr></table></figure></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在网上看见一个用Ruby On Rail写了一个一键收藏网页文章至github上的文章（<a href="http://www.jianshu.com/p/19d2f3a3b5d8">点我查看</a>）,觉得很想法，于是乎，我也想用nodejs写一个。</p>
+<h3 id="功能描述">功能描述</h3><ol>
+<li>chrome扩展，发送当前标签页的标题和网址</li>
+<li>nodejs后端服务器，获取chrome发送的数据，保存至markdown文件中</li>
+<li>定时提交数据至github上</li>
+</ol>]]>
+    
+    </summary>
+    
+      <category term="nodejs" scheme="http://xchb.work/tags/nodejs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[hexo上传源文件]]></title>
+    <link href="http://xchb.work/2016/01/28/hexo%E4%B8%8A%E4%BC%A0%E6%BA%90%E6%96%87%E4%BB%B6/"/>
+    <id>http://xchb.work/2016/01/28/hexo上传源文件/</id>
+    <published>2016-01-28T09:57:15.000Z</published>
+    <updated>2016-02-23T02:53:58.000Z</updated>
+    <content type="html"><![CDATA[<h1 id="一、背景">一、背景</h1><p>之前用hexo和github搭建了一个免费博客。但本地的目录结构有些乱，想调整一下，趁此机会把hexo的源文件和所使用的主题上传到github上，以防需要换电脑时，原始数据丢失。</p>
+<h1 id="二、实现">二、实现</h1><p>上传hexo源文件同时也不和hexo编译后的文件冲突，可以使用一个仓库多个分支的思路。为我们的代码仓库创建两个分支，一个是 master， 一个hexo。master分支用来管理hexo编译之后的静态资源，而hexo分支用来管理hexo的源码，即一些markdown文件和主题等，需要设置这个分支为默认分支，以便拷贝仓库代码到本地时更方便。</p>
+<a id="more"></a>
+<ol>
+<li>把代码仓库拷贝到本地  <code>git clone https://github.com/swxy/swxy.github.io.git</code>, 因为我之前本地已经用了，所以可以忽视这个;</li>
+<li>查看分支 <code>git branch</code>, 如果没有分支则新建一个<code>git remote add origin https://github.com/swxy/swxy.github.io.git</code>, 此时应该会有一个 <strong>master</strong> 分支了。</li>
+<li>新建一个 <strong>hexo</strong> 分支<code>git branch hexo</code> 。</li>
+<li>切换到 <strong>hexo</strong> 分支<code>git checkout hexo</code> 。</li>
+<li>添加源文件<code>git add *</code>, 因为 <code>.gitignore</code> 默认已经把 hexo 编译的文件忽略了，所以可以可以用 <code>git add *</code>。</li>
+<li>然后提交文件的变更 <code>git commit -m &quot;xxx&quot;</code>。</li>
+<li>push变更到远程仓库中<code>git push origin hexo</code> (用hexo分支来管理源码）。</li>
+</ol>
+<h1 id="三、附录">三、附录</h1><h3 id="常见问题收集：">常见问题收集：</h3><ol>
+<li><code>hexo g</code>编译时，出现错误：<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123; [<span class="string">Error:</span> Cannot find module <span class="string">'./build/Release/DTraceProviderBindings'</span>] <span class="string">code:</span> <span class="string">'MODULE_NOT_FOUND'</span> &#125;</span><br><span class="line">&#123; [<span class="string">Error:</span> Cannot find module <span class="string">'./build/default/DTraceProviderBindings'</span>] <span class="string">code:</span> <span class="string">'MODULE_NOT_FOUND'</span> &#125;</span><br><span class="line">&#123; [<span class="string">Error:</span> Cannot find module <span class="string">'./build/Debug/DTraceProviderBindings'</span>] <span class="string">code:</span> <span class="string">'MODULE_NOT_FOUND'</span> &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>解决方案，安装hexo加上 <code>--no-optional</code>;</p>
+<blockquote>
+<p>npm install hexo –no-optional</p>
+</blockquote>
+<p>解决方案来源<a href="http://www.jianshu.com/p/98e993305653" target="_blank" rel="external">hexo安装问题解决方法</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h1 id="一、背景">一、背景</h1><p>之前用hexo和github搭建了一个免费博客。但本地的目录结构有些乱，想调整一下，趁此机会把hexo的源文件和所使用的主题上传到github上，以防需要换电脑时，原始数据丢失。</p>
+<h1 id="二、实现">二、实现</h1><p>上传hexo源文件同时也不和hexo编译后的文件冲突，可以使用一个仓库多个分支的思路。为我们的代码仓库创建两个分支，一个是 master， 一个hexo。master分支用来管理hexo编译之后的静态资源，而hexo分支用来管理hexo的源码，即一些markdown文件和主题等，需要设置这个分支为默认分支，以便拷贝仓库代码到本地时更方便。</p>]]>
+    
+    </summary>
+    
+      <category term="hexo" scheme="http://xchb.work/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[代码片段（JS）]]></title>
+    <link href="http://xchb.work/2015/12/11/%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5%EF%BC%88JS%EF%BC%89/"/>
+    <id>http://xchb.work/2015/12/11/代码片段（JS）/</id>
+    <published>2015-12-11T09:31:08.000Z</published>
+    <updated>2016-01-28T09:13:31.000Z</updated>
+    <content type="html"><![CDATA[<p>#获取随机字符</p>
+<p>###获取26个字母与10个数字之间的随机字符方法<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable"><span class="keyword">var</span> randstr</span> = Math.random().toString(<span class="number">36</span>).slice(<span class="number">2</span>);</span><br><span class="line"><span class="variable"><span class="keyword">var</span> len</span> = randstr.length;</span><br><span class="line"><span class="variable"><span class="keyword">var</span> r</span> = randstr.charAt(~~(len*Math.random()))</span><br></pre></td></tr></table></figure></p>
+<p>###获取某一个区间中的随机字符，利用unicode实现<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String.fromCharCode(<span class="number">0x2200</span> + (<span class="number">0x220f</span> - <span class="number">0x2200</span> + <span class="number">1</span>) * Math.random());</span><br></pre></td></tr></table></figure></p>
+<p>PS: 数字的unicode范围为 0030–0039；英文小写字母的范围为，0061–007a</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>#获取随机字符</p>
+<p>###获取26个字母与10个数字之间的随机字符方法<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</spa]]>
+    </summary>
+    
+      <category term="snippet" scheme="http://xchb.work/tags/snippet/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Terminal 路径显示]]></title>
+    <link href="http://xchb.work/2015/12/01/Terminal-%E8%B7%AF%E5%BE%84%E6%98%BE%E7%A4%BA/"/>
+    <id>http://xchb.work/2015/12/01/Terminal-路径显示/</id>
+    <published>2015-12-01T06:13:37.000Z</published>
+    <updated>2016-02-23T02:54:19.000Z</updated>
+    <content type="html"><![CDATA[<p>查看提示符显示方式：</p>
+<blockquote>
+<p>echo $PS1</p>
+</blockquote>
+<p>修改<code>$PS1</code>，打开文件 <code>~/.bash_profile</code>，增加一条规则，如果有则编辑即可：</p>
+<blockquote>
+<p>export PS1=”\u \w$”</p>
+</blockquote>
+<p>如果需要设置路径颜色，可以修改为：</p>
+<blockquote>
+<p>export PS1=”[\e[33;1m\u@\h: \e[31m\W\e[0m]\$”</p>
+</blockquote>
+<p>保存修改并退出，应用更新：</p>
+<blockquote>
+<p>source ~/.bash_profile</p>
+</blockquote>
+<a id="more"></a>
+<p>附录：<br><code>$PS1</code>符号对应的含义，<br><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">\a</span>    ASCII 响铃字符（也可以键入 <span class="string">\007）</span>  </span><br><span class="line"><span class="string">\d</span>    <span class="string">"Wed Sep 06"</span> 格式的日期  </span><br><span class="line"><span class="string">\e</span>    ASCII 转义字符（也可以键入 <span class="string">\033）</span></span><br><span class="line"><span class="string">\h</span>    主机名的第一部分（如 <span class="string">"mybox"</span>）</span><br><span class="line"><span class="string">\H</span>    主机的全称（如 <span class="string">"mybox.mydomain.com"</span>）</span><br><span class="line"><span class="string">\j</span>    在此 shell 中通过按 ^Z 挂起的进程数</span><br><span class="line"><span class="string">\l</span>    此 shell 的终端设备名（如 <span class="string">"ttyp4"</span>）</span><br><span class="line"><span class="string">\n</span>    换行符</span><br><span class="line"><span class="string">\r</span>    回车符</span><br><span class="line"><span class="string">\s</span>    shell 的名称（如 <span class="string">"bash"</span>）</span><br><span class="line"><span class="string">\t</span>    <span class="number">24</span> 小时制时间（如 <span class="string">"23:01:01"</span>）</span><br><span class="line"><span class="string">\T</span>    <span class="number">12</span> 小时制时间（如 <span class="string">"11:01:01"</span>）</span><br><span class="line"><span class="string">\@</span>    带有 am/pm 的 <span class="number">12</span> 小时制时间</span><br><span class="line"><span class="string">\u</span>    用户名</span><br><span class="line"><span class="string">\v</span>    bash 的版本（如 <span class="number">2.04</span>）</span><br><span class="line"><span class="string">\V</span>    Bash 版本（包括补丁级别） ?/td&gt;</span><br><span class="line"><span class="string">\w</span>    当前工作目录（如 <span class="string">"/home/drobbins"</span>）</span><br><span class="line"><span class="string">\W</span>    当前工作目录的“基名 (basename)”（如 <span class="string">"drobbins"</span>）</span><br><span class="line"><span class="string">\!</span>    当前命令在历史缓冲区中的位置</span><br><span class="line"><span class="string">\#</span>    命令编号（只要您键入内容，它就会在每次提示时累加）</span><br><span class="line"><span class="string">\$</span>    如果您不是超级用户 (root)，则插入一个 <span class="string">"$"</span>；如果您是超级用户，则显示一个 <span class="string">"#"</span></span><br><span class="line"><span class="string">\xxx</span>  插入一个用三位数 xxx（用零代替未使用的数字，如 <span class="string">"\007"</span>）表示的 ASCII 字符</span><br><span class="line"><span class="string">\\</span>    反斜杠</span><br><span class="line"><span class="string">\[</span>    这个序列应该出现在不移动光标的字符序列（如颜色转义序列）之前。它使 bash 能够正确计算自动换行。</span><br><span class="line"><span class="string">\]</span>    这个序列应该出现在非打印字符序列之后。</span><br></pre></td></tr></table></figure></p>
+<p>颜色的表示方法，<br><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'\e[0m'</span>      no <span class="built_in">color</span></span><br><span class="line"><span class="string">'\e[1;37m'</span>   white</span><br><span class="line"><span class="string">'\e[0;30m'</span>   black</span><br><span class="line"><span class="string">'\e[0;34m'</span>   <span class="built_in">blue</span></span><br><span class="line"><span class="string">'\e[1;34m'</span>   light <span class="built_in">blue</span></span><br><span class="line"><span class="string">'\e[0;32m'</span>   <span class="built_in">green</span></span><br><span class="line"><span class="string">'\e[1;32m'</span>   light <span class="built_in">green</span></span><br><span class="line"><span class="string">'\e[0;36m'</span>   cyan</span><br><span class="line"><span class="string">'\e[1;36m'</span>   light cyan</span><br><span class="line"><span class="string">'\e[0;31m'</span>   <span class="built_in">red</span></span><br><span class="line"><span class="string">'\e[1;31m'</span>   light <span class="built_in">red</span></span><br><span class="line"><span class="string">'\e[0;35m'</span>   purple</span><br><span class="line"><span class="string">'\e[1;35m'</span>   light purple</span><br><span class="line"><span class="string">'\e[0;33m'</span>   brown</span><br><span class="line"><span class="string">'\e[1;33m'</span>   yellow</span><br><span class="line"><span class="string">'\e[0;30m'</span>   gray</span><br><span class="line"><span class="string">'\e[0;37m'</span>   light gray</span><br></pre></td></tr></table></figure></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>查看提示符显示方式：</p>
+<blockquote>
+<p>echo $PS1</p>
+</blockquote>
+<p>修改<code>$PS1</code>，打开文件 <code>~/.bash_profile</code>，增加一条规则，如果有则编辑即可：</p>
+<blockquote>
+<p>export PS1=”\u \w$”</p>
+</blockquote>
+<p>如果需要设置路径颜色，可以修改为：</p>
+<blockquote>
+<p>export PS1=”[\e[33;1m\u@\h: \e[31m\W\e[0m]\$”</p>
+</blockquote>
+<p>保存修改并退出，应用更新：</p>
+<blockquote>
+<p>source ~/.bash_profile</p>
+</blockquote>]]>
+    
+    </summary>
+    
+      <category term="CentOS" scheme="http://xchb.work/tags/CentOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[CentOS 安装nginx]]></title>
+    <link href="http://xchb.work/2015/11/10/CentOS-%E5%AE%89%E8%A3%85nginx/"/>
+    <id>http://xchb.work/2015/11/10/CentOS-安装nginx/</id>
+    <published>2015-11-10T00:44:23.000Z</published>
+    <updated>2016-02-23T11:53:25.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="安装EPEL">安装EPEL</h3><pre><code>sudo yum <span class="operator"><span class="keyword">install</span> epel-<span class="keyword">release</span></span>
+</code></pre><h3 id="安装nginx">安装nginx</h3><pre><code>sudo yum <span class="keyword">install</span> nginx
+</code></pre><a id="more"></a>
+<h3 id="nginx常用操作">nginx常用操作</h3><p>启动</p>
+<pre><code>sudo /etc/init.d/nginx <span class="literal">start</span>
+</code></pre><p>关闭</p>
+<pre><code>sudo /etc/init.d/nginx <span class="built_in">stop</span><span class="comment">
+//或者</span>
+nginx -s <span class="built_in">stop</span><span class="comment">
+//或者</span>
+nginx -s quit
+</code></pre><p>重启</p>
+<pre><code>sudo <span class="regexp">/etc/i</span>nit.d<span class="regexp">/nginx restart</span>
+</code></pre><p>重新载入（修改配置文件之后）</p>
+<pre><code>sudo <span class="regexp">/etc/i</span>nit.d<span class="regexp">/nginx reload</span>
+</code></pre>]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="安装EPEL">安装EPEL</h3><pre><code>sudo yum <span class="operator"><span class="keyword">install</span> epel-<span class="keyword">release</span></span>
+</code></pre><h3 id="安装nginx">安装nginx</h3><pre><code>sudo yum <span class="keyword">install</span> nginx
+</code></pre>]]>
+    
+    </summary>
+    
+      <category term="CentOS" scheme="http://xchb.work/tags/CentOS/"/>
+    
+  </entry>
+  
+</feed>
