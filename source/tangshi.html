@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>唐诗三百首</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+        }
+        #content {
+            height: 100%;
+            overflow-y: auto;
+            padding: 0;
+            list-style: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        h1 {
+            padding: 10px;
+            margin: 0;
+            border-bottom: 1px solid #dfdfdf;
+        }
+
+        #content a {
+            display: block;
+            border-bottom: 1px solid #dfdfdf;
+            padding: 10px 15px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .visited {
+            color: #00a854;
+        }
+        a:hover {
+            color: #f04134;
+        }
+        #popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 10px 15px;
+            height: 100%;
+            overflow-y: auto;
+            background: #fff;
+            display: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .author {
+            padding: 5px 10px 0;
+            display: block;
+        }
+        .poetry {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+    <script src="./tsdata.js"></script>
+</head>
+<body >
+<div id="content">
+</div>
+
+<div id="popup">
+
+</div>
+
+<script>
+    var dataKeys = Object.keys(data);
+    var $content = document.querySelector('#content');
+    var $popup = document.querySelector('#popup');
+    var visited = setVisited();
+    var colors = ['#999', '#888', '#777', '#666', '#555', '#444', '#333', '#222', '#111'];
+    window.addEventListener('DOMContentLoaded', function () {
+        domLoaded();
+        setPosition();
+        bind();
+        detail();
+    });
+
+    function domLoaded() {
+        var list = dataKeys.map(function (key, idx) {
+            var count = visited[key];
+            var active = count !== undefined ? 'visited' : '';
+            return '<a href="#' + key + '" style="' + getColor(count) + '">'
+                + (idx + 1) + '. ' + key
+                + '</a>';
+        }).join('');
+        $content.innerHTML = '<h1>唐诗三百首</h1>' + list;
+    }
+
+    function getColor(count, color) {
+        if (!count) {
+            return '';
+        }
+        var idx = Math.floor(count / 3);
+        if (idx > 8) {
+            idx = 8;
+        }
+        return color ? colors[idx] : 'color:' + colors[idx];
+    }
+
+    function setPosition() {
+        var scrollPos = localStorage.getItem('scrollPos');
+        if (scrollPos !== undefined) {
+            $content.scrollTop = scrollPos;
+        }
+    }
+
+    function setVisited() {
+        return JSON.parse(localStorage.getItem('visited') || '{}');
+    }
+
+    function saveVisited() {
+        localStorage.setItem('visited', JSON.stringify(visited));
+    }
+
+    function clear() {
+
+    }
+
+    function bind () {
+        window.addEventListener('hashchange', function () {
+            detail();
+            return true;
+        });
+
+        $content.addEventListener('click', function (e) {
+            var target = e.target;
+            if (target.tagName === 'A') {
+                var key = target.getAttribute('href').replace('#', '');
+                if (!key) {
+                    return;
+                }
+                if (visited[key] !== undefined) {
+                    visited[key] += 1;
+                }
+                else {
+                    visited[key] = 1;
+                }
+                target.style.color = getColor(visited[key], true);
+            }
+        });
+
+        window.addEventListener('pagehide', function () {
+            localStorage.setItem("scrollPos", $content.scrollTop);
+            saveVisited();
+        });
+        window.addEventListener('beforeunload', function () {
+            localStorage.setItem("scrollPos", $content.scrollTop);
+            saveVisited();
+        });
+    }
+
+    function detail() {
+        var hash = decodeURIComponent(location.hash).replace('#', '').trim();
+        if (!hash) {
+            popup(true);
+            return null;
+        }
+        var item = data[hash];
+        if (!item) {
+            popup(true);
+            return null;
+        }
+        $popup.innerHTML = [
+            '<h1>' + item.title + '</h1>',
+            item.author ? ('<a class="author" href="' + item.authorLink + '">' + '作者： ' + item.author + '</a>') : '',
+            '<p class="poetry">' + splitWords(item.cont) + '</p>',
+            '<p>' + splitWords(item.c1, 'c1') + '</p>',
+            '<p>' + splitWords(item.c2) + '</p>'
+        ].join('');
+        popup();
+    }
+
+    function splitWords(str, type) {
+        if (type === 'c1') {
+            return str.replace(/([。？，；])/g, '$1<br >').trim();
+        }
+        return str.replace(/([。？])/g, '$1<br >').trim();
+    }
+
+    function popup(hide) {
+        if (hide) {
+            $popup.style.display = 'none';
+            $popup.innerHTML = '';
+        }
+        else {
+            $popup.style.display = 'block';
+        }
+    }
+</script>
+</body>
+</html>
