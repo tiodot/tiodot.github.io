@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>图片加载 | Tiodot blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="随着网页内容越来越丰富，页面的图片也越来越多，导致页面加载越来越慢。针对页面的优化，图片加载是一个重点。常见的优化方案有图片预加载，图片惰性加载。或者针对图片格式做一些优化，例如使用webp之类的。这里主要关注图片的加载方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图片加载">
+<meta property="og:url" content="http://xchb.work/2016/05/23/%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD/index.html">
+<meta property="og:site_name" content="Tiodot blog">
+<meta property="og:description" content="随着网页内容越来越丰富，页面的图片也越来越多，导致页面加载越来越慢。针对页面的优化，图片加载是一个重点。常见的优化方案有图片预加载，图片惰性加载。或者针对图片格式做一些优化，例如使用webp之类的。这里主要关注图片的加载方式。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-05-23T03:55:34.000Z">
+<meta property="article:modified_time" content="2022-08-11T07:18:44.295Z">
+<meta property="article:author" content="tiodot">
+<meta property="article:tag" content="HTML">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiodot blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tiodot blog</a>
+      </h1>
+      
+    </div>
+    <!-- <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xchb.work"></form>
+      </div>
+    </div> -->
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-图片加载" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/05/23/%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD/" class="article-date">
+  <time class="dt-published" datetime="2016-05-23T03:55:34.000Z" itemprop="datePublished">2016-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      图片加载
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>随着网页内容越来越丰富，页面的图片也越来越多，导致页面加载越来越慢。针对页面的优化，图片加载是一个重点。常见的优化方案有图片预加载，图片惰性加载。或者针对图片格式做一些优化，例如使用webp之类的。这里主要关注图片的加载方式。</p>
+<span id="more"></span>
+
+<h2 id="图片预加载"><a href="#图片预加载" class="headerlink" title="图片预加载"></a>图片预加载</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>图片的加载速度往往影响着网站整体的用户体验，尤其对于包含大量图片的网站。对图片进行预加载，不失为一个高效的解决方案。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>使用CSS3、JavaScript、Ajax实现图片预加载</p>
+<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://perishablepress.com/3-ways-preload-images-css-javascript-ajax/">3 Ways to Preload Images with CSS, JavaScript, or Ajax</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.csdn.net/article/2013-10-15/2817187-3-ways-preload-images-css-javascript-ajax">利用CSS、JavaScript及Ajax实现图片预加载的三大方法</a></li>
+</ol>
+<h2 id="图片惰性加载"><a href="#图片惰性加载" class="headerlink" title="图片惰性加载"></a>图片惰性加载</h2><h3 id="背景-1"><a href="#背景-1" class="headerlink" title="背景"></a>背景</h3><p>页面图片较多，影响加载速度，而且很多时候，页面加载完了，用户却不会滑动到页面最下面，也就是说加载出来的图片，用户更本就没去看，造成资源浪费的同时也使得页面加载变慢。</p>
+<h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p>按需加载图片，如果用户滚动到图片位置，则加载图片。</p>
+<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><ol>
+<li>给<code>img</code>标签设置src为一个loading图标，然后把实际的图片地址存储到其他自定义属性中；</li>
+<li>监听页面滚动事件，如果页面滚动到图片区域，则替换src为图片的视觉地址。</li>
+</ol>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img data-original=&#x27;actual.jpg&#x27; src=&#x27;loading.gif&#x27;/&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="具体实现-1"><a href="#具体实现-1" class="headerlink" title="具体实现"></a>具体实现</h3><ol>
+<li>参考<a target="_blank" rel="noopener" href="http://www.cnblogs.com/zichi/p/5021697.html">教你实现图片的惰性加载</a></li>
+<li>使用jQuery的<a target="_blank" rel="noopener" href="https://plugins.jquery.com/lazyload/">惰性加载库（lazyload）</a>, <a target="_blank" rel="noopener" href="https://github.com/tuupola/jquery_lazyload">github地址</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xchb.work/2016/05/23/%E5%9B%BE%E7%89%87%E5%8A%A0%E8%BD%BD/" data-id="cl6osh823001guxmhec86bhk3" data-title="图片加载" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/05/25/React-Todo%E7%A4%BA%E4%BE%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          React-Todo示例
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/05/17/Meta-%E6%95%B4%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Meta 整理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/" rel="tag">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/snippet/" rel="tag">snippet</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 12.5px;">Angular</a> <a href="/tags/CSS/" style="font-size: 12.5px;">CSS</a> <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/HTML/" style="font-size: 12.5px;">HTML</a> <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/snippet/" style="font-size: 10px;">snippet</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/23/ES6%E4%B9%8BIteration/">ES6之Iteration</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/11/WebStorm%E4%B9%8BJSCS/">WebStorm之JSCS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/async-validator%E4%BD%BF%E7%94%A8/">async-validator使用</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/21/ES6%E4%B9%8BDestructuring/">ES6之Destructuring</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/20/ES6%E4%B9%8BTemporal-Dead-Zone/">ES6之Temporal Dead Zone</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 tiodot<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>WebStorm之JSCS | Tiodot blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在开发代码时，通常需要配置一些额外的代码质量校验工具来保证代码质量，像我们这边使用的就是fecs。因为平常都是用Webstorm来开发，正好fecs有提供这样的插件，用起来却也很方便。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebStorm之JSCS">
+<meta property="og:url" content="http://xchb.work/2017/03/11/WebStorm%E4%B9%8BJSCS/index.html">
+<meta property="og:site_name" content="Tiodot blog">
+<meta property="og:description" content="在开发代码时，通常需要配置一些额外的代码质量校验工具来保证代码质量，像我们这边使用的就是fecs。因为平常都是用Webstorm来开发，正好fecs有提供这样的插件，用起来却也很方便。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-03-11T02:04:26.000Z">
+<meta property="article:modified_time" content="2022-08-11T07:18:44.294Z">
+<meta property="article:author" content="tiodot">
+<meta property="article:tag" content="JS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiodot blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tiodot blog</a>
+      </h1>
+      
+    </div>
+    <!-- <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xchb.work"></form>
+      </div>
+    </div> -->
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-WebStorm之JSCS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/03/11/WebStorm%E4%B9%8BJSCS/" class="article-date">
+  <time class="dt-published" datetime="2017-03-11T02:04:26.000Z" itemprop="datePublished">2017-03-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      WebStorm之JSCS
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在开发代码时，通常需要配置一些额外的代码质量校验工具来保证代码质量，像我们这边使用的就是<a target="_blank" rel="noopener" href="http://fecs.baidu.com/">fecs</a>。因为平常都是用Webstorm来开发，正好<code>fecs</code>有提供这样的<a target="_blank" rel="noopener" href="https://github.com/leeight/Baidu-FE-Code-Style#webstorm">插件</a>，用起来却也很方便。</p>
+<span id="more"></span>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ol>
+<li>把代码下载或者<code>git clone</code>到本地某个目录</li>
+<li>然后全局安装<code>fecs</code>, <code>npm i -g fecs</code></li>
+<li>然后修改jscs的配置, 目录指向下载的<code>Baidu-FE-Code-Style</code>即可</li>
+<li>然后可能还需要指定一个<code>jscs</code>的配置文件，可以在<code>Baidu-FE-Code-Style</code>下新建一个<code>.jscsrc</code>文件，内容随意一个json就行，<code>fecs</code>并不会用到这个配置，我配置的是：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;preset&quot;: &quot;airbnb&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>每次文件文件有变更时，会执行<code>Baidu-FE-Code-Style</code>工程目录下的<code>[bin/jscs](https://github.com/leeight/Baidu-FE-Code-Style/blob/master/bin/jscs)</code>, 最主要的代码:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">spawn(&#x27;fecs&#x27;,</span><br><span class="line">    [&#x27;--silent&#x27;, &#x27;--reporter=baidu&#x27;, &#x27;--format=checkstyle&#x27;, file],</span><br><span class="line">    &#123;stdio: &#x27;inherit&#x27;&#125;);</span><br></pre></td></tr></table></figure>
+<p>即执行全局的fecs命令，<code>--fotmat=checkstyle</code>是指输入符合webstorm规范的xml形式的检测结果，内容大致为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line"></span><br><span class="line">&lt;checkstyle version=&quot;4.3&quot;&gt;</span><br><span class="line">  &lt;file name=&quot;/Users/xxx/project/util.js&quot; count=&quot;1&quot;&gt;</span><br><span class="line">    &lt;error line=&quot;107&quot; column=&quot;24&quot; severity=&quot;error&quot; source=&quot;fecs&quot; message=&quot;  JS021: [强制] 不得省略语句结束的分号。&quot; rule=&quot;semi&quot;/&gt;</span><br><span class="line">  &lt;/file&gt;</span><br><span class="line">&lt;/checkstyle&gt;</span><br></pre></td></tr></table></figure>
+<p>webstorm会根据error标签中的信息展示相关的提示。</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>由于webstorm只支持给统一设置检测错误提示的颜色，所以这里没有办法根据<code>severity</code>的不用取值,例如<code>error</code>, <code>warning</code>等展示不同的颜色。</p>
+<h1 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h1><p><a target="_blank" rel="noopener" href="https://github.com/leeight/Baidu-FE-Code-Style">leeight&#x2F;Baidu-FE-Code-Style</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xchb.work/2017/03/11/WebStorm%E4%B9%8BJSCS/" data-id="cl6osh81u000suxmhb7aw5gjd" data-title="WebStorm之JSCS" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/" rel="tag">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/23/ES6%E4%B9%8BIteration/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ES6之Iteration
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/02/async-validator%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">async-validator使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/" rel="tag">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/snippet/" rel="tag">snippet</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 12.5px;">Angular</a> <a href="/tags/CSS/" style="font-size: 12.5px;">CSS</a> <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/HTML/" style="font-size: 12.5px;">HTML</a> <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/snippet/" style="font-size: 10px;">snippet</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/23/ES6%E4%B9%8BIteration/">ES6之Iteration</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/11/WebStorm%E4%B9%8BJSCS/">WebStorm之JSCS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/async-validator%E4%BD%BF%E7%94%A8/">async-validator使用</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/21/ES6%E4%B9%8BDestructuring/">ES6之Destructuring</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/20/ES6%E4%B9%8BTemporal-Dead-Zone/">ES6之Temporal Dead Zone</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 tiodot<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

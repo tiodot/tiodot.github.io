@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>ES6之Iteration | Tiodot blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="探索问题：  为什么ES6中数组，字符串等是可迭代的，而对象却是不可迭代？直观感受就是数组和字符串都可以用for...of，而对象却不可以。 实现一个最小化的迭代器。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES6之Iteration">
+<meta property="og:url" content="http://xchb.work/2017/03/23/ES6%E4%B9%8BIteration/index.html">
+<meta property="og:site_name" content="Tiodot blog">
+<meta property="og:description" content="探索问题：  为什么ES6中数组，字符串等是可迭代的，而对象却是不可迭代？直观感受就是数组和字符串都可以用for...of，而对象却不可以。 实现一个最小化的迭代器。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-03-23T03:00:05.000Z">
+<meta property="article:modified_time" content="2022-08-11T07:18:44.293Z">
+<meta property="article:author" content="tiodot">
+<meta property="article:tag" content="JS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiodot blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tiodot blog</a>
+      </h1>
+      
+    </div>
+    <!-- <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xchb.work"></form>
+      </div>
+    </div> -->
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ES6之Iteration" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/03/23/ES6%E4%B9%8BIteration/" class="article-date">
+  <time class="dt-published" datetime="2017-03-23T03:00:05.000Z" itemprop="datePublished">2017-03-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      ES6之Iteration
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>探索问题：</p>
+<ol>
+<li>为什么ES6中数组，字符串等是可迭代的，而对象却是不可迭代？直观感受就是数组和字符串都可以用<code>for...of</code>，而对象却不可以。</li>
+<li>实现一个最小化的迭代器。</li>
+</ol>
+<span id="more"></span>
+<p>JavaScript中可以迭代的两种情景：</p>
+<ol>
+<li>程序层级：检测程序的结构</li>
+<li>数据层级：检测程序中所有的数据</li>
+</ol>
+<p>这两个层级过于抽象，尤其是<code>程序层级</code>，可以借助js中的数组来理解：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const dt = [1,2,3,4]; // 数据层</span><br><span class="line">dt.func = () =&gt; &#123;&#125;; // 程序层</span><br><span class="line"></span><br><span class="line">for (let i in dt) console.log(xs[i]); // 1, 2, 3, 4, () =&gt; &#123;&#125;</span><br><span class="line"></span><br><span class="line">for (let i of dt) console.log(i); // 1, 2, 3, 4</span><br></pre></td></tr></table></figure>
+<p>像ES5中的<code>for...in</code>可以检测对象中的所有属性，针对的大多数就是程序层级。为了解决这个问题，ES6中引入了<code>for...of</code>.</p>
+<blockquote>
+<p>那既然可以用<code>for...in</code>遍历对象，为何就不能用<code>for...of</code>了？</p>
+</blockquote>
+<p>如果设计可以迭代对象，也就意味着会混淆上面两个层级，简单的理解就是一个对象不可能仅仅只是像数组一样存储一组数据。如果混合上述两个概念，也就是说可以使用<code>for...of</code>遍历对象，意味着只能遍历对象的数据，而不能遍历其他程序层级的属性，相当于把对象当成一个数据层级来处理，这很可能会破坏代码结构。</p>
+<p>为了解决对象不可以使用<code>for...of</code>遍历的问题，ES6中引入了一个新的概念<code>Map</code>，使用<code>Map</code>创建的key-value对就可以迭代遍历。</p>
+<blockquote>
+<p>当然也可以做一个工具函数，来实现对对象的迭代。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">objectEntries</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> propKeys = <span class="title class_">Reflect</span>.<span class="title function_">ownKeys</span>(obj);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        [<span class="title class_">Symbol</span>.<span class="property">iterator</span>]() &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">this</span>;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">next</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (index &lt; propKeys.<span class="property">length</span>) &#123;</span><br><span class="line">                <span class="keyword">const</span> key = propKeys[index];</span><br><span class="line">                index++;</span><br><span class="line">                <span class="keyword">return</span> &#123; <span class="attr">value</span>: [key, obj[key]] &#125;;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> &#123; <span class="attr">done</span>: <span class="literal">true</span> &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">first</span>: <span class="string">&#x27;Jane&#x27;</span>, <span class="attr">last</span>: <span class="string">&#x27;Doe&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> [key,value] <span class="keyword">of</span> <span class="title function_">objectEntries</span>(obj)) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;key&#125;</span>: <span class="subst">$&#123;value&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Output:</span></span><br><span class="line"><span class="comment">// first: Jane</span></span><br><span class="line"><span class="comment">// last: Doe</span></span><br></pre></td></tr></table></figure>
+
+<p>PS.可以思考一下为什么不扩充在Object原型链上？</p>
+<h1 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h1><ol>
+<li><a target="_blank" rel="noopener" href="http://exploringjs.com/es6/ch_iteration.html#sec_plain-objects-not-iterable">Plain objects are not iterable</a></li>
+<li><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/38777177">Why are Objects not Iterable in JavaScript?</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xchb.work/2017/03/23/ES6%E4%B9%8BIteration/" data-id="cl6osh81m000euxmhg3iwhdbg" data-title="ES6之Iteration" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/" rel="tag">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/11/WebStorm%E4%B9%8BJSCS/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">WebStorm之JSCS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/" rel="tag">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/snippet/" rel="tag">snippet</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 12.5px;">Angular</a> <a href="/tags/CSS/" style="font-size: 12.5px;">CSS</a> <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/HTML/" style="font-size: 12.5px;">HTML</a> <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/snippet/" style="font-size: 10px;">snippet</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/23/ES6%E4%B9%8BIteration/">ES6之Iteration</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/11/WebStorm%E4%B9%8BJSCS/">WebStorm之JSCS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/async-validator%E4%BD%BF%E7%94%A8/">async-validator使用</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/21/ES6%E4%B9%8BDestructuring/">ES6之Destructuring</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/20/ES6%E4%B9%8BTemporal-Dead-Zone/">ES6之Temporal Dead Zone</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 tiodot<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

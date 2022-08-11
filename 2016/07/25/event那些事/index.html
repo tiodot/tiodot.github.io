@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>event那些事 | Tiodot blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="遇到一个问题： A标签跳转前需要做一下登录判断，如果未登录则不让跳转，使用preventDefault发现阻止不了A标签的跳转。 解决方法： 加上stopImmediatePropagation才行。当然也可以把A标签的href属性设置为空，通过js来控制跳转，但改动略大些，忽视。 于是正好借此机会整理和收集一下JavaScript中的event事件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="event那些事">
+<meta property="og:url" content="http://xchb.work/2016/07/25/event%E9%82%A3%E4%BA%9B%E4%BA%8B/index.html">
+<meta property="og:site_name" content="Tiodot blog">
+<meta property="og:description" content="遇到一个问题： A标签跳转前需要做一下登录判断，如果未登录则不让跳转，使用preventDefault发现阻止不了A标签的跳转。 解决方法： 加上stopImmediatePropagation才行。当然也可以把A标签的href属性设置为空，通过js来控制跳转，但改动略大些，忽视。 于是正好借此机会整理和收集一下JavaScript中的event事件。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-07-25T11:58:42.000Z">
+<meta property="article:modified_time" content="2022-08-11T07:18:44.294Z">
+<meta property="article:author" content="tiodot">
+<meta property="article:tag" content="JS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiodot blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tiodot blog</a>
+      </h1>
+      
+    </div>
+    <!-- <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xchb.work"></form>
+      </div>
+    </div> -->
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-event那些事" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/07/25/event%E9%82%A3%E4%BA%9B%E4%BA%8B/" class="article-date">
+  <time class="dt-published" datetime="2016-07-25T11:58:42.000Z" itemprop="datePublished">2016-07-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      event那些事
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>遇到一个问题：</p>
+<p><code>A</code>标签跳转前需要做一下登录判断，如果未登录则不让跳转，使用preventDefault发现阻止不了<code>A</code>标签的跳转。</p>
+<p>解决方法：</p>
+<p>加上stopImmediatePropagation才行。当然也可以把<code>A</code>标签的<code>href</code>属性设置为空，通过js来控制跳转，但改动略大些，忽视。</p>
+<p>于是正好借此机会整理和收集一下JavaScript中的event事件。</p>
+<span id="more"></span>
+
+<h2 id="事件监听方式"><a href="#事件监听方式" class="headerlink" title="事件监听方式"></a>事件监听方式</h2><p>js中实现事件监听方式，以<code>click</code>事件为例，可以有直接设置元素的<code>onclick</code>属性：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 直接设置元素的onclick属性 --&gt;</span><br><span class="line">&lt;button id=&quot;btn1&quot;&gt;js绑定事件测试按钮1&lt;/button&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    document.querySelector(&#x27;#btn1&#x27;).onclick = function (e) &#123;</span><br><span class="line">        alert(&#x27;js绑定事件方式1&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>或者用<code>addEventListener</code>监听<code>click</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 用addEventListener监听click --&gt;</span><br><span class="line">&lt;button id=&quot;btn2&quot;&gt;js绑定事件测试按钮1&lt;/button&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    document.querySelector(&#x27;#btn2&#x27;).addEventListener(&#x27;click&#x27;, function (e) &#123;</span><br><span class="line">        alert(&#x27;js绑定事件方式2&#x27;);</span><br><span class="line">    &#125;);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>提到事件绑定，解绑事件也事件当然也可以有，具体请可以查看<a href="/event.html">Demo</a>。至于像<code>attachEvent</code>这类，这里不多讨论。</p>
+<p>比较推荐的绑定方式是<code>addEventListener</code>, 这种方式可以给DOM元素添加不止一个事件处理函数，而且可以控制事件在捕获或冒泡阶段触发。</p>
+<p>PS：addEventListener可以接受三个参数，其语法是<code>target.addEventListener(type, listener[, useCapture]);</code>，第三个参数标识是在捕获阶段触发还是在冒泡阶段，默认值为<code>false</code>标识在冒泡阶段触发</p>
+<h2 id="事件捕获或冒泡"><a href="#事件捕获或冒泡" class="headerlink" title="事件捕获或冒泡"></a>事件捕获或冒泡</h2><p>这里简要说明一下W3C的事件模型：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">                 | |  / \</span><br><span class="line">-----------------| |--| |-----------------</span><br><span class="line">| element1       | |  | |                |</span><br><span class="line">|   -------------| |--| |-----------     |</span><br><span class="line">|   |element2    \ /  | |          |     |</span><br><span class="line">|   --------------------------------     |</span><br><span class="line">|        W3C event model                 |</span><br><span class="line">------------------------------------------</span><br></pre></td></tr></table></figure>
+<p>假设给元素添加一下事件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">element1.addEventListener(&#x27;click&#x27;,doSomething2,true)</span><br><span class="line">element2.addEventListener(&#x27;click&#x27;,doSomething,false)</span><br></pre></td></tr></table></figure>
+<p>当点击element2时，首先会点击事件开始于捕获阶段，触发element1的事件处理函数doSomething2，然后捕获阶段没有可执行的的事件处理函数了，接着开始进入冒泡阶段，触发element2的事件处理函数doSomething。</p>
+<p>其他一些情况请参考<a target="_blank" rel="noopener" href="http://www.quirksmode.org/js/events_order.html">Event order</a></p>
+<h2 id="事件阻止"><a href="#事件阻止" class="headerlink" title="事件阻止"></a>事件阻止</h2><p>事件阻止有三个方法： preventDefault，stopPropagation，stopImmediatePropagation。</p>
+<ol>
+<li>preventDefault： 阻止DOM元素的默认行为，例如阻止表单<code>type=&quot;submit&quot;</code>的button或input的提交表单行为。</li>
+<li>stopPropagation： 阻止事件的传播（冒泡）。</li>
+<li>stopImmediatePropagation： 阻止其他事件处理函数执行，并也会阻止事件的传播。</li>
+<li>事件处理函数中使用 <code>return false</code>：效果等价于 preventDefault + stopPropagation (据说是jQuery中实现的，原生JS中并没有什么用，测试环境是chrome 52)。</li>
+</ol>
+<p>具体请查看<a href="/event.html">Demo</a></p>
+<p>PS: 重点不是本文所写，而是以下参考的文章。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener">EventTarget.addEventListener</a></li>
+<li><a target="_blank" rel="noopener" href="https://codeplanet.io/preventdefault-vs-stoppropagation-vs-stopimmediatepropagation/">PREVENTDEFAULT VS. STOPPROPAGATION VS. STOPIMMEDIATEPROPAGATION</a></li>
+<li><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/10712219/remove-onclick-event-from-img-tag">Remove onclick event from img tag</a></li>
+<li><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/5302903/jquery-event-stopimmediatepropagation-vs-return-false">jquery: event.stopImmediatePropagation() vs return false</a></li>
+<li><a target="_blank" rel="noopener" href="http://fuelyourcoding.com/jquery-events-stop-misusing-return-false/">jQuery Events: Stop (Mis)Using Return False</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.quirksmode.org/js/events_order.html">Event order</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xchb.work/2016/07/25/event%E9%82%A3%E4%BA%9B%E4%BA%8B/" data-id="cl6osh81y0012uxmh6ekz4ses" data-title="event那些事" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/" rel="tag">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/01/nodejs-web%E5%BA%94%E7%94%A8%E4%BB%A3%E7%A0%81%E7%83%AD%E6%9B%B4%E6%96%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          nodejs web应用代码热更新
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/21/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">浏览器工作原理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/" rel="tag">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/snippet/" rel="tag">snippet</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 12.5px;">Angular</a> <a href="/tags/CSS/" style="font-size: 12.5px;">CSS</a> <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/HTML/" style="font-size: 12.5px;">HTML</a> <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/snippet/" style="font-size: 10px;">snippet</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/23/ES6%E4%B9%8BIteration/">ES6之Iteration</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/11/WebStorm%E4%B9%8BJSCS/">WebStorm之JSCS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/async-validator%E4%BD%BF%E7%94%A8/">async-validator使用</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/21/ES6%E4%B9%8BDestructuring/">ES6之Destructuring</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/20/ES6%E4%B9%8BTemporal-Dead-Zone/">ES6之Temporal Dead Zone</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 tiodot<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

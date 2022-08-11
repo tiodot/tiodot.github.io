@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>WebUploader使用 | Tiodot blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="背景最近需要封装一个图片上传组件，需要支持单文件，多文件，LOGO上传等功能，其中LOGO上传需要检测上传图片的尺寸，并且需要支持图片裁切。改组件需要提供统一的UI样式，并有统一的错误提示。该组件基于Webuploader封装。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebUploader使用">
+<meta property="og:url" content="http://xchb.work/2015/08/14/WebUploader%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Tiodot blog">
+<meta property="og:description" content="背景最近需要封装一个图片上传组件，需要支持单文件，多文件，LOGO上传等功能，其中LOGO上传需要检测上传图片的尺寸，并且需要支持图片裁切。改组件需要提供统一的UI样式，并有统一的错误提示。该组件基于Webuploader封装。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-08-14T12:44:04.000Z">
+<meta property="article:modified_time" content="2022-08-11T07:18:44.294Z">
+<meta property="article:author" content="tiodot">
+<meta property="article:tag" content="JS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiodot blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tiodot blog</a>
+      </h1>
+      
+    </div>
+    <!-- <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://xchb.work"></form>
+      </div>
+    </div> -->
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-WebUploader使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/08/14/WebUploader%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time class="dt-published" datetime="2015-08-14T12:44:04.000Z" itemprop="datePublished">2015-08-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      WebUploader使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近需要封装一个图片上传组件，需要支持单文件，多文件，LOGO上传等功能，<br>其中LOGO上传需要检测上传图片的尺寸，并且需要支持图片裁切。改组件需要提供统一的UI样式，并有统一的错误提示。<br>该组件基于Webuploader封装。</p>
+<span id="more"></span>
+
+<h1 id="遇坑-amp-填坑"><a href="#遇坑-amp-填坑" class="headerlink" title="遇坑&amp;填坑"></a>遇坑&amp;填坑</h1><ul>
+<li><p>由于需要兼容IE9，故需要混合使用flash和H5上传方式，使用flash上传时，给上传按钮绑定 <em>click</em> 事件时，点击按钮不会触发事件 &#x3D;&gt; 绑定<em>mouseup</em>事件。</p>
+</li>
+<li><p>使用flash上传，如果在上传完成之前隐藏上传按钮，会中断上传。而使用官网提供的解决方案，即给上传按钮添加以下class：</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.webuploader-element-invisible &#123;</span><br><span class="line">    position: absolute !important;</span><br><span class="line">    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */</span><br><span class="line">    clip: rect(1px,1px,1px,1px);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 发现IE9不好使 &#x3D;&gt; 将按钮的<code>position</code>设置为absolute，然后设置一个较大的<code>left</code>属性，同时将父元素的<code>overflow</code>设置为hidden、<code>position</code>设置为relative。</p>
+</li>
+<li><p>由于可以一个上传实例绑定多个上传按钮，当上传时，需要区分是重新上传或直接上传新图片 &#x3D;&gt; <code>file</code>对象的<code>source</code>属性中有个<code>_refer</code>表示该文件是哪个dom上传的。</p>
+</li>
+<li><p>LOGO上传需要裁切 &#x3D;&gt; 新注册一个裁切的方法，<a target="_blank" rel="noopener" href="https://github.com/fex-team/webuploader/tree/master/examples/cropper">Webuploader裁切示例</a></p>
+</li>
+<li><p>虽然WebUploader提供了文件队列管理，但不满足实际要求 &#x3D;&gt; 自己再造轮子, 源码中检测文件数量的代码</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">var uploader = this,</span><br><span class="line">    opts = uploader.options,</span><br><span class="line">    count = uploader.count,</span><br><span class="line">    max = parseInt( opts.fileNumLimit, 10 ),</span><br><span class="line">    flag = true;</span><br><span class="line"></span><br><span class="line">if ( !max ) &#123;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">uploader.on( &#x27;beforeFileQueued&#x27;, function( file ) &#123;</span><br><span class="line"></span><br><span class="line">    if ( count &gt;= max &amp;&amp; flag ) &#123;</span><br><span class="line">        flag = false;</span><br><span class="line">        this.trigger( &#x27;error&#x27;, &#x27;Q_EXCEED_NUM_LIMIT&#x27;, max, file );</span><br><span class="line">        setTimeout(function() &#123;</span><br><span class="line">            flag = true;</span><br><span class="line">        &#125;, 1 );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return count &gt;= max ? false : true;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">uploader.on( &#x27;fileQueued&#x27;, function() &#123;</span><br><span class="line">    count++;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">uploader.on( &#x27;fileDequeued&#x27;, function() &#123;</span><br><span class="line">    count--;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">uploader.on( &#x27;reset&#x27;, function() &#123;</span><br><span class="line">    count = 0;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="http://fex.baidu.com/webuploader">WebUploader的官网</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://xchb.work/2015/08/14/WebUploader%E4%BD%BF%E7%94%A8/" data-id="cl6osh81v000uuxmhdjum0wrg" data-title="WebUploader使用" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/" rel="tag">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/08/24/CSS%E5%B1%85%E4%B8%AD%E6%98%BE%E7%A4%BA/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          CSS居中显示
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/" rel="tag">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/snippet/" rel="tag">snippet</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 12.5px;">Angular</a> <a href="/tags/CSS/" style="font-size: 12.5px;">CSS</a> <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/HTML/" style="font-size: 12.5px;">HTML</a> <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/snippet/" style="font-size: 10px;">snippet</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/03/23/ES6%E4%B9%8BIteration/">ES6之Iteration</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/11/WebStorm%E4%B9%8BJSCS/">WebStorm之JSCS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/async-validator%E4%BD%BF%E7%94%A8/">async-validator使用</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/21/ES6%E4%B9%8BDestructuring/">ES6之Destructuring</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/20/ES6%E4%B9%8BTemporal-Dead-Zone/">ES6之Temporal Dead Zone</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 tiodot<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
