@@ -2,5 +2,5 @@ title: 我
 date: 2017-02-27 21:12:17
 ---
 
-邮箱：swxymile@163.com
-github: [swxy](https://github.com/swxy)
+邮箱：tiodot@163.com
+github: [tiodot](https://github.com/tiodot)
