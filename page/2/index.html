@@ -82,6 +82,58 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-nodejs使用shebang" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/09/30/nodejs%E4%BD%BF%E7%94%A8shebang/" class="article-date">
+  <time class="dt-published" datetime="2016-09-30T02:19:20.000Z" itemprop="datePublished">2016-09-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/09/30/nodejs%E4%BD%BF%E7%94%A8shebang/">nodejs使用shebang</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="基本含义"><a href="#基本含义" class="headerlink" title="基本含义"></a>基本含义</h1><p><code>shebang</code>也可以称之为<code>hashbang</code>, 代指<code>#!</code>。一般出现在脚本的第一行，用于在unix系统或类unix系统中指定默认的脚本文件的解释程序。<br>其语法格式是：</p>
+<blockquote>
+<p>#!interpreter [optional-arg] &#x2F;&#x2F; 解释程序的绝对路径和可选参数</p>
+</blockquote>
+<ol>
+<li>如果脚本文件中没有<code>#!</code>这一行，执行时会以系统默认的解释程序允许</li>
+<li>如果<code>#!</code>之后的解释程序是一个可执行文件，那么执行这个脚本时，它就会把文件名及其参数一起作为参数传给那个解释程序去执行。</li>
+</ol>
+        
+          <p class="article-more-link">
+            <a href="/2016/09/30/nodejs%E4%BD%BF%E7%94%A8shebang/#more">阅读更多</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tiodot.github.io/2016/09/30/nodejs%E4%BD%BF%E7%94%A8shebang/" data-id="cl6q3oadb001drumhdhetbnpy" data-title="nodejs使用shebang" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Angular-小技巧" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2016/09/27/Angular-%E5%B0%8F%E6%8A%80%E5%B7%A7/" class="article-date">
@@ -511,52 +563,6 @@
 
 
   
-    <article id="post-hexo上传源文件" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2016/01/28/hexo%E4%B8%8A%E4%BC%A0%E6%BA%90%E6%96%87%E4%BB%B6/" class="article-date">
-  <time class="dt-published" datetime="2016-01-28T09:57:15.000Z" itemprop="datePublished">2016-01-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2016/01/28/hexo%E4%B8%8A%E4%BC%A0%E6%BA%90%E6%96%87%E4%BB%B6/">hexo上传源文件</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h1><p>之前用hexo和github搭建了一个免费博客。但本地的目录结构有些乱，想调整一下，趁此机会把hexo的源文件和所使用的主题上传到github上，以防需要换电脑时，原始数据丢失。</p>
-<h1 id="二、实现"><a href="#二、实现" class="headerlink" title="二、实现"></a>二、实现</h1><p>上传hexo源文件同时也不和hexo编译后的文件冲突，可以使用一个仓库多个分支的思路。为我们的代码仓库创建两个分支，一个是 master， 一个hexo。master分支用来管理hexo编译之后的静态资源，而hexo分支用来管理hexo的源码，即一些markdown文件和主题等，需要设置这个分支为默认分支，以便拷贝仓库代码到本地时更方便。</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/01/28/hexo%E4%B8%8A%E4%BC%A0%E6%BA%90%E6%96%87%E4%BB%B6/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tiodot.github.io/2016/01/28/hexo%E4%B8%8A%E4%BC%A0%E6%BA%90%E6%96%87%E4%BB%B6/" data-id="cl6q3oad70015rumh7gww88ss" data-title="hexo上传源文件" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -594,7 +600,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
     </div>
   </div>
 
@@ -605,6 +611,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/08/12/%E5%A6%82%E4%BD%95%E4%B8%80%E5%91%A8%E5%86%85%E7%86%9F%E6%82%89%E6%96%B0%E9%A1%B9%E7%9B%AE/">如何一周内熟悉新项目</a>
+          </li>
         
           <li>
             <a href="/2017/03/23/ES6%E4%B9%8BIteration/">ES6之Iteration</a>
@@ -620,10 +630,6 @@
         
           <li>
             <a href="/2017/02/21/ES6%E4%B9%8BDestructuring/">ES6之Destructuring</a>
-          </li>
-        
-          <li>
-            <a href="/2017/02/20/ES6%E4%B9%8BTemporal-Dead-Zone/">ES6之Temporal Dead Zone</a>
           </li>
         
       </ul>

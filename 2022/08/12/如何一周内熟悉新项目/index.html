@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3LTDW72KLK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3LTDW72KLK');
+</script>
+<!-- End Google Analytics -->
+
+  
+  <title>如何一周内熟悉新项目 | Tiodot blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="因为新换了一个部门，这周需要接手了一个已有项目，后面开发维护都由我来负责。一个已经上线有半年多时间的B端项目，整体复杂度还是很高的.可以看到纯代码量4w+，其中包含的外部依赖也非常多，React全家桶，redux， rxjs等，还有富文本编辑逻辑，动态表单渲染和国际化方案，随便一个都是一个挑战，一个项目包含这么多其复杂性不言而喻。给我的时间并不多，如何能快速熟悉项目并正常开发需求呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何一周内熟悉新项目">
+<meta property="og:url" content="https://tiodot.github.io/2022/08/12/%E5%A6%82%E4%BD%95%E4%B8%80%E5%91%A8%E5%86%85%E7%86%9F%E6%82%89%E6%96%B0%E9%A1%B9%E7%9B%AE/index.html">
+<meta property="og:site_name" content="Tiodot blog">
+<meta property="og:description" content="因为新换了一个部门，这周需要接手了一个已有项目，后面开发维护都由我来负责。一个已经上线有半年多时间的B端项目，整体复杂度还是很高的.可以看到纯代码量4w+，其中包含的外部依赖也非常多，React全家桶，redux， rxjs等，还有富文本编辑逻辑，动态表单渲染和国际化方案，随便一个都是一个挑战，一个项目包含这么多其复杂性不言而喻。给我的时间并不多，如何能快速熟悉项目并正常开发需求呢？">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tiodot.github.io/img/202208/12.PNG">
+<meta property="og:image" content="https://tiodot.github.io/img/202208/122.jpg">
+<meta property="article:published_time" content="2022-08-12T08:59:27.000Z">
+<meta property="article:modified_time" content="2022-08-12T09:05:13.071Z">
+<meta property="article:author" content="tiodot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tiodot.github.io/img/202208/12.PNG">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiodot blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tiodot blog</a>
+      </h1>
+      
+    </div>
+    <!-- <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tiodot.github.io"></form>
+      </div>
+    </div> -->
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-如何一周内熟悉新项目" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/08/12/%E5%A6%82%E4%BD%95%E4%B8%80%E5%91%A8%E5%86%85%E7%86%9F%E6%82%89%E6%96%B0%E9%A1%B9%E7%9B%AE/" class="article-date">
+  <time class="dt-published" datetime="2022-08-12T08:59:27.000Z" itemprop="datePublished">2022-08-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      如何一周内熟悉新项目
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>因为新换了一个部门，这周需要接手了一个已有项目，后面开发维护都由我来负责。一个已经上线有半年多时间的B端项目，整体复杂度还是很高的.<br><img src="/img/202208/12.PNG"><br>可以看到纯代码量4w+，其中包含的外部依赖也非常多，React全家桶，redux， rxjs等，还有富文本编辑逻辑，动态表单渲染和国际化方案，随便一个都是一个挑战，一个项目包含这么多其复杂性不言而喻。给我的时间并不多，如何能快速熟悉项目并正常开发需求呢？</p>
+<span id="more"></span>
+
+<h2 id="了解业务"><a href="#了解业务" class="headerlink" title="了解业务"></a>了解业务</h2><p>做为一个新人，首要是了解业务，需要知道业务目标是什么，其用户都有哪些，这些用户在什么场景什么时机使用。</p>
+<ol>
+<li>业务目标：每一个业务都会有一个存在的价值，也就是做个业务的目标，如果业务比较大，可能还会有使命和价值观，例如抖音电商业务，其使命是没有难卖的优价好物，让美好生活触手可及。愿景是成为用户发现并获得优价好物的首选平台。但一般如果是比较具体的业务需求，可能就是为了解决某一类问题，或者提供某一个能力，然后提升一个指标。例如解决性能问题，提升NPS。了解业务的目标，可以更好的帮助我们理解产品的设计逻辑。</li>
+<li>业务用户，每一个产品都不可能是普适的，都会适用的人群（公司内员工、公司外；商家、消费者等），例如人人都爱刷的抖音短视频平台，这个业务至少会有普通消费者（刷视频的人），创作者，运营人员。了解业务的用户群体，是理解业务交互的一个核心要素，能更好的帮助我们去知道页面组织的逻辑，数据生成消费逻辑。</li>
+<li>应用场景：相同的功能在不同的场景下面交互会不一样，例如同一份表单预览和编辑是不一样的。了解应用场景，帮助我们更好的去知道功能逻辑。</li>
+<li>使用时机：可以观测用户时机，使用频率大致判断产品的技术要求，如果是高频访问业务，可能会有性能、质量等要求。<br>了解一个业务现有功能，推荐的方式看已有的需求文档和对应的交互视觉稿，如果toC业务一般可以自己体验整个流程，如果toB流程，一般会涉及很复杂的角色、权限管控不一定能体验。这期间如果有条件可以找对应的产品经理帮忙梳理轮廓，然后通过看需求文档补充业务细节。</li>
+</ol>
+<h2 id="了解技术方案"><a href="#了解技术方案" class="headerlink" title="了解技术方案"></a>了解技术方案</h2><p>理想情况下，开发需求的流程应该是：<br><img src="/img/202208/122.jpg" alt="流程"></p>
+<p>每一个需求都应该是会有技术方案，里面包含从需求转换到代码实现的逻辑，以及代码实现过程的一些依赖，影响面等。对于前端来说，通过技术方案评审应该知道是否新增页面，如果是路由是什么等。<br>当然大多数情况可能是没有技术方案，这个时候就比较难受，可以问问是否有前后端接口文档，接口文档如果写的好也可以反应出代码的一些划分逻辑。</p>
+<h2 id="跑项目了解细节"><a href="#跑项目了解细节" class="headerlink" title="跑项目了解细节"></a>跑项目了解细节</h2><p>一般开源项目都会README文档，然而对于大部分业务项目都是没有，如果有可能也是初始化项目自带的，能用，但可能会存在极大的误导性。<br>对于前端项目而言，有个比较好的点是所有依赖和相关的命令都可以在 package.json 找到，一般情况下只需要 npm install，然后 npm start就可以跑起来了。这期间如果出现一下报错啥的，大概率是就是Node版本不一致导致的，需要咨询一下项目之前的维护者，或者自行搜索解决报错。<br>项目跑起来就可以从上而下的去看代码了，基本上每一个前端仓库都会有router文件，按照router文件一个个去看页面逻辑，这期间可以配合一些调试技巧，例如添加一些 console.log, debugger等看代码运行的逻辑和数据等。<br>项目可能会依赖很多其他组件，如果是一些公司内部的私有npm包，可能会将源码也发布到npm上面，如果有空或者有疑问可以从node_modules里面看对应的实现。<br>了解代码实现后，接下来就是了解构建、部署的过程，前端项目部署简单可以直接本地通过cli发布到线上，当然也可以复杂到需要各个平台去操作，例如构建会有构建平台，构建完之后还可能会有平台检测构建产物，检测是否有安全问题等，最后可能需要有个平台去部署。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>当了解清楚业务目标和能力后，帮助我们理解产品的设计思维，通过技术方案可以了解代码的设计逻辑，通过跑项目看代码可以帮助我们理解从开发到上线的一些过程，这个过程最好是能有经验的同学支持或者教学一遍，避免出现误操作导致线上事故。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tiodot.github.io/2022/08/12/%E5%A6%82%E4%BD%95%E4%B8%80%E5%91%A8%E5%86%85%E7%86%9F%E6%82%89%E6%96%B0%E9%A1%B9%E7%9B%AE/" data-id="cl6q8t2v20000camhgg98f19h" data-title="如何一周内熟悉新项目" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/03/23/ES6%E4%B9%8BIteration/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ES6之Iteration</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/" rel="tag">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/snippet/" rel="tag">snippet</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 12.5px;">Angular</a> <a href="/tags/CSS/" style="font-size: 12.5px;">CSS</a> <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/HTML/" style="font-size: 12.5px;">HTML</a> <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/snippet/" style="font-size: 10px;">snippet</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/12/%E5%A6%82%E4%BD%95%E4%B8%80%E5%91%A8%E5%86%85%E7%86%9F%E6%82%89%E6%96%B0%E9%A1%B9%E7%9B%AE/">如何一周内熟悉新项目</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/23/ES6%E4%B9%8BIteration/">ES6之Iteration</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/11/WebStorm%E4%B9%8BJSCS/">WebStorm之JSCS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/async-validator%E4%BD%BF%E7%94%A8/">async-validator使用</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/21/ES6%E4%B9%8BDestructuring/">ES6之Destructuring</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 tiodot<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
