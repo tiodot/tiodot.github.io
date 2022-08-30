@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3LTDW72KLK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3LTDW72KLK');
+</script>
+<!-- End Google Analytics -->
+
+  
+  <title>如何创建响应式页面 | Tiodot blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="如今的前端开发可真是越来越难了，不仅前端技术变化快，能访问页面的终端也越来越多了。以前大部分是通过PC访问，后面是出现智能手机后，平板，甚至手表，各个终端的屏幕尺寸千差万别。以iPhone为例，最早都是3.5英寸的，后面4.7英寸，现如今都有8种不同尺寸，具体可以看设备屏幕尺寸大全，开发一个页面就不得不考虑各种屏幕的展示效果，那我们又如何来适配不同屏幕的展示效果呢，总不可能不通尺寸开发一套样式吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何创建响应式页面">
+<meta property="og:url" content="https://tiodot.github.io/2022/08/30/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E5%93%8D%E5%BA%94%E5%BC%8F%E9%A1%B5%E9%9D%A2/index.html">
+<meta property="og:site_name" content="Tiodot blog">
+<meta property="og:description" content="如今的前端开发可真是越来越难了，不仅前端技术变化快，能访问页面的终端也越来越多了。以前大部分是通过PC访问，后面是出现智能手机后，平板，甚至手表，各个终端的屏幕尺寸千差万别。以iPhone为例，最早都是3.5英寸的，后面4.7英寸，现如今都有8种不同尺寸，具体可以看设备屏幕尺寸大全，开发一个页面就不得不考虑各种屏幕的展示效果，那我们又如何来适配不同屏幕的展示效果呢，总不可能不通尺寸开发一套样式吧。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tiodot.github.io/img/202208/screenshot-20220830-170406.png">
+<meta property="article:published_time" content="2022-08-30T08:42:51.000Z">
+<meta property="article:modified_time" content="2022-08-30T10:27:54.906Z">
+<meta property="article:author" content="tiodot">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tiodot.github.io/img/202208/screenshot-20220830-170406.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiodot blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tiodot blog</a>
+      </h1>
+      
+    </div>
+    <!-- <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tiodot.github.io"></form>
+      </div>
+    </div> -->
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-如何创建响应式页面" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/08/30/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E5%93%8D%E5%BA%94%E5%BC%8F%E9%A1%B5%E9%9D%A2/" class="article-date">
+  <time class="dt-published" datetime="2022-08-30T08:42:51.000Z" itemprop="datePublished">2022-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      如何创建响应式页面
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>如今的前端开发可真是越来越难了，不仅前端技术变化快，能访问页面的终端也越来越多了。以前大部分是通过PC访问，后面是出现智能手机后，平板，甚至手表，各个终端的屏幕尺寸千差万别。以iPhone为例，最早都是3.5英寸的，后面4.7英寸，现如今都有8种不同尺寸，具体可以看<a target="_blank" rel="noopener" href="https://uiiiuiii.com/screen/">设备屏幕尺寸大全</a>，开发一个页面就不得不考虑各种屏幕的展示效果，那我们又如何来适配不同屏幕的展示效果呢，总不可能不通尺寸开发一套样式吧。</p>
+<span id="more"></span>
+
+<h2 id="基于JavaScript-和-rem-的响应式设计"><a href="#基于JavaScript-和-rem-的响应式设计" class="headerlink" title="基于JavaScript 和 rem 的响应式设计"></a>基于JavaScript 和 rem 的响应式设计</h2><p>响应式设计最好可以追溯到淘宝&#x2F;网易的h5页面设计，通过rem方案来实现。</p>
+<p>其原理可以简单理解为：<br><img src="/../img/202208/screenshot-20220830-170406.png"></p>
+<p>其实现可以参考<a target="_blank" rel="noopener" href="https://github.com/amfe/lib-flexible">lib-flexble</a>页面加载完成时，会通过JavaScript获取页面的<code>clientWidht</code>，然后设置html的<code>font-size</code>。 例如对于iPhone6而言，其宽度为375px, html标签的<code>font-size</code>会被设置为 <code>37.5px</code>。需要使用宽度的地方使用 <code>rem</code> 替代 <code>px</code>。 在iPhone6&#x2F;7&#x2F;8中 <code>1rem = 37.5px</code>。 当然我们也可以定义计算规则，例如在iPhone6中设置 <code>1rem = 10px</code>，可以通过下面规则函数转换：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">setRem</span> () &#123;</span><br><span class="line">  <span class="keyword">const</span> size = <span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">clientWidth</span> / <span class="number">37.5</span>;</span><br><span class="line">  <span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">style</span>.<span class="property">fontSize</span> = size + <span class="string">&#x27;px&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">setRem</span>();</span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;resize&#x27;</span>, setRem);</span><br></pre></td></tr></table></figure>
+
+<p>使用库还会检测是否支持 <code>0.5px</code> 这种设置 1px border的方案，如果支持会添加一个<code>hairlines</code> 的类，在需要使用border的情况下，就可以使用:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">&#125;</span><br><span class="line">// 适配移动端 <span class="number">1px</span> <span class="attribute">border</span></span><br><span class="line"><span class="selector-class">.hairline</span> <span class="selector-tag">div</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">0.5px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于不支持的终端，则默认展示为 <code>1px</code>。这种方式对于视觉要求不高的场景是挺实用的。</p>
+<p>该方案主要确定是需要通过JavaScript来动态计算fontSize，虽然简单，但还是有些冗余。</p>
+<h2 id="基于-vw-和-rem-的响应式设计"><a href="#基于-vw-和-rem-的响应式设计" class="headerlink" title="基于 vw 和 rem 的响应式设计"></a>基于 vw 和 rem 的响应式设计</h2><p>使用JavaScript目的是根据屏幕宽度计算html的fontSize大小，在CSS中有<code>calc（）</code>函数支持动态计算数值，而 <code>vw</code>单位刚好可以获取到页面的宽度<code>1vw = document.documentElement.clientWidth / 100</code>。因此当我们需要实现iPhone6 上面的 <code>1rem = 100px</code>，也就是设置fontSize为<code>100px</code>时，可以通过CSS实现：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="built_in">calc</span>(<span class="number">100vw</span> / <span class="number">37.5</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果需要适配横屏，那就需要使用一下 <code>vmin</code>来替代 <code>vw</code>, <code>vmin = Math.min(vw, vh)</code>使得大小是合适的。</p>
+<p>如果需要使用限定某一个宽度范围，可以通过媒体查询设置不同的规则，例如在超过 1000px 的屏幕，我们希望字体随着屏幕增大，但减缓增长</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="built_in">calc</span>(<span class="number">100vw</span> / <span class="number">37.5</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">1000px</span>) &#123;</span><br><span class="line">  // 每增加<span class="number">100px</span>时，fontSize增加 <span class="number">1</span> px</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="built_in">calc</span>(<span class="number">26px</span> + (<span class="number">100vw</span> - <span class="number">1000px</span>) / <span class="number">100</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过使用media查询，可以任意定制fontSize的尺寸，结合rem就可以实现响应式布局了。</p>
+<p>小Tip: 移动端一般html的font-size为16px，如果遇到一些Bug，例如需要兼容某些Safari版本浏览器时，可以通过使用百分比100%来兼容，例如:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">  // iPhone6屏幕大小为<span class="number">16px</span>， iphoneX 大小为 <span class="number">16.39px</span></span><br><span class="line">  <span class="attribute">font-size</span>: <span class="built_in">calc</span>(<span class="number">100%</span> + (<span class="number">100vw</span> - <span class="number">375px</span>) / <span class="number">100</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tiodot.github.io/2022/08/30/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E5%93%8D%E5%BA%94%E5%BC%8F%E9%A1%B5%E9%9D%A2/" data-id="cl7fzhvgn00005emh7n3eennv" data-title="如何创建响应式页面" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/08/12/%E5%A6%82%E4%BD%95%E4%B8%80%E5%91%A8%E5%86%85%E7%86%9F%E6%82%89%E6%96%B0%E9%A1%B9%E7%9B%AE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">如何一周内熟悉新项目</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/" rel="tag">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/snippet/" rel="tag">snippet</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 12.5px;">Angular</a> <a href="/tags/CSS/" style="font-size: 12.5px;">CSS</a> <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/HTML/" style="font-size: 12.5px;">HTML</a> <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/snippet/" style="font-size: 10px;">snippet</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/30/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E5%93%8D%E5%BA%94%E5%BC%8F%E9%A1%B5%E9%9D%A2/">如何创建响应式页面</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/12/%E5%A6%82%E4%BD%95%E4%B8%80%E5%91%A8%E5%86%85%E7%86%9F%E6%82%89%E6%96%B0%E9%A1%B9%E7%9B%AE/">如何一周内熟悉新项目</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/23/ES6%E4%B9%8BIteration/">ES6之Iteration</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/11/WebStorm%E4%B9%8BJSCS/">WebStorm之JSCS</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/02/async-validator%E4%BD%BF%E7%94%A8/">async-validator使用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 tiodot<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
