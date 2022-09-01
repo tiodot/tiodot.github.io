@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3LTDW72KLK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3LTDW72KLK');
+</script>
+<!-- End Google Analytics -->
+
+  
+  <title>缓存之坑——缓存数据的一些感受 | Tiodot blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="最近遇到一个很无趣的问题，发现问题到解决问题耗费了不少精力。问题是这个样子的，在一个SPA的项目中，有两个页面复用了同一个下拉选择组件，传递给组件的属性是不一样的，期望获取的数据字段字段不一样：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="缓存之坑——缓存数据的一些感受">
+<meta property="og:url" content="https://tiodot.github.io/2022/09/01/%E7%BC%93%E5%AD%98%E4%B9%8B%E5%9D%91%E2%80%94%E2%80%94%E7%BC%93%E5%AD%98%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%84%9F%E5%8F%97/index.html">
+<meta property="og:site_name" content="Tiodot blog">
+<meta property="og:description" content="最近遇到一个很无趣的问题，发现问题到解决问题耗费了不少精力。问题是这个样子的，在一个SPA的项目中，有两个页面复用了同一个下拉选择组件，传递给组件的属性是不一样的，期望获取的数据字段字段不一样：">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://tiodot.github.io/img/202208/screenshot-20220901-100215.png">
+<meta property="article:published_time" content="2022-09-01T01:54:35.000Z">
+<meta property="article:modified_time" content="2022-09-01T16:51:51.068Z">
+<meta property="article:author" content="tiodot">
+<meta property="article:tag" content="设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tiodot.github.io/img/202208/screenshot-20220901-100215.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiodot blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tiodot blog</a>
+      </h1>
+      
+    </div>
+    <!-- <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tiodot.github.io"></form>
+      </div>
+    </div> -->
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-缓存之坑——缓存数据的一些感受" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/09/01/%E7%BC%93%E5%AD%98%E4%B9%8B%E5%9D%91%E2%80%94%E2%80%94%E7%BC%93%E5%AD%98%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%84%9F%E5%8F%97/" class="article-date">
+  <time class="dt-published" datetime="2022-09-01T01:54:35.000Z" itemprop="datePublished">2022-09-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      缓存之坑——缓存数据的一些感受
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近遇到一个很无趣的问题，发现问题到解决问题耗费了不少精力。问题是这个样子的，在一个SPA的项目中，有两个页面复用了同一个下拉选择组件，传递给组件的属性是不一样的，期望获取的数据字段字段不一样：<br><img src="/../img/202208/screenshot-20220901-100215.png"></p>
+<span id="more"></span>
+
+<p>但是切换页面是发现两者行为总是一致，要么A页面符合预期B页面不符合，要么B页面符合预期但是A页面又不符合预期了。但不符合预期时，刷新一下页面又好使了。一开始还以为是环境问题，页面加载的JS资源有问题。先检查了一遍加载资源和发布的静态资源都是一样的，然后就很懵逼了。。。</p>
+<h2 id="排查问题"><a href="#排查问题" class="headerlink" title="排查问题"></a>排查问题</h2><p>排查问题我常用的有两种方式：</p>
+<ol>
+<li>通过现象找原因：也就是最常用使用的debug模式，通过二分法缩小影响访问，一步一步趋近问题的根因，这种方式比较适合不熟悉的项目，或者一些诡异的兼容性问题。</li>
+<li>通过代码印证猜想：出现问题先提出问题原因的猜想，然后通过代码去一一印证代码，如果踩坑够多，这种方式解决问题效率会高很多。<br>随着工作年限的增加，经验也越发丰富，所以一般都是先猜想，然后验证失败后再使用debug模式来寻找问题的原因。</li>
+</ol>
+<p>针对该问题在第一个猜想是否环境问题，被验证不是真正原因后，就放弃猜想了，还是debug了一下代码。debug代码有很多种方式，例如添加执行日志，或者单步调试，或者缩减代码写demo等。 通过 debug 代码发现原因是这个组件通过工厂函数创建的，然后依赖另外的一个组件，同时会缓存工厂函数创建的结果，如果命中了就直接返回，形式为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">ComponentB</span> (props) &#123;</span><br><span class="line">  ....</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> cache;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">factory</span>(<span class="params">props</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!cache) &#123;</span><br><span class="line">    cache = <span class="title class_">ComponentB</span>(<span class="title class_">Object</span>.<span class="title function_">assign</span>(&#123;<span class="attr">xx</span>: xx&#125;, props));</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> cache;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 页面依赖的组件</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">ComponentA</span> = <span class="title function_">factory</span>(&#123;<span class="attr">props</span>: x&#125;)</span><br></pre></td></tr></table></figure>
+<p>原因可能看出来了，我们传入的属性并不会影响到缓存，也就是说A页面和B页面其实共用的同一个缓存结果，后来者没法通过props影响到组件的表现了。</p>
+<p>这种方式看起来抽象出来看起来是不是有点蠢，但有时候就是这么迫不得已，为了自认为所谓的性能，就加入一些缓存。虽然但是还是避免不了添加缓存，因为不写点高级的代码，怎么体现自己的能力呢？既然需要加入，那如何避免踩坑？</p>
+<h2 id="缓存的设计"><a href="#缓存的设计" class="headerlink" title="缓存的设计"></a>缓存的设计</h2><p>首先需要明确是缓存是为了某一个具体场景的问题，需要有限制范围，不然缓存就没有存在的意义了。没有边界，职责就不清晰，这就埋下了隐患，其实苦逼程序的员的日常也是这样，没有边界的事情狗都不想理，只有泥淖，越陷越深。这明显是一个坑，所以设计缓存，先定义场景。明确使用场景后，需要分析场景的变量。好比一个纯函数，函数输出只依赖于输入，是需要可预测的。缓存也是一样，是否命中缓存应该也是可预测的。</p>
+<p>可预测性意味着当我们需要缓存某一个场景相关的数据时，需要考虑到该场景下面的所有输入的变量。上述案例中缓存其实就是没有考虑不同页面的属性不一样，导致出现隐藏较深的Bug。对于前端页面而言，当我们需要缓存数据时，一般会有两种情况：</p>
+<ol>
+<li>无输入类型缓存，例如浏览器环境的判断，这种情况一般用一个JavaScript的变量来保存，在首次使用时计算并赋值，后续需要就可以命中缓存；</li>
+<li>有输入类型缓存，例如接口数据缓存，计算结果缓存，都是有前置依赖，这种就需要特别的小心了，接下来会重点讲述。</li>
+</ol>
+<h3 id="缓存的生命周期管理"><a href="#缓存的生命周期管理" class="headerlink" title="缓存的生命周期管理"></a>缓存的生命周期管理</h3><p>设计缓存时，首要是确定缓存的生命周期，什么时候产生，什么时候销毁，这其实就决定了使用哪种存储方式： 内存、sessionStorage&#x2F;localStorage、indexDB等。一般数据计算结果，组件等会使用内存缓存，在第一次执行后进行缓存，后续可直接使用提升页面的体验，内存的好处是不仅可以存储数据，还可以完整保留JavaScript的对象引用关系等，是最常用的方式了，像React中的 useMemo, memo, useCallback等都是基于内存缓存的。 而 sessionStorage&#x2F;localStorge 会用于放一些特定场景的数据，例如页面埋点需要一个uuid来统计pv&#x2F;uv，如果是非强制登录网站，一般会生成一个随机字符串存储在localStorage中，当然还有持久化页面的一些状态，例如数据筛选项这种，以提供刷新前后一致性的交互。如果使用localStorage，还需要考虑存储大小的限制，浏览器的限制大概为4MB，所以需要有一个清空的机制，避免出现写满的情况。IndexDB接触较少，就不展开了。</p>
+<h3 id="缓存的key-x2F-value设计"><a href="#缓存的key-x2F-value设计" class="headerlink" title="缓存的key&#x2F;value设计"></a>缓存的key&#x2F;value设计</h3><p>缓存大多数情况下都是key&#x2F;value结构，针对缓存的key首要原则的就是唯一性，这个应该比较好理解，我们都不希望无缘无故就命中不相关的缓存。例如我们针对A页面缓存了些数据（例如是否访问过的标识），访问B页面时也能命中这个缓存，就会出现一些异常。这个唯一性一般可以有以下几种方式保证：</p>
+<ol>
+<li>数据id，如果是后端数据，一般都会有个对应的id，例如列表页面，需要知道哪些访问过，显示不同的样式，就可以使用这些id做为key。</li>
+<li>时间戳方式，例如需要保存页面状态，在页面回退时恢复，即可以在url上面添加一个时间戳，然后以这个时间戳做为缓存的key，这样可以有效的避免新进入和回退场景。</li>
+<li>序列化变量，序列化方式可以是JSON.stringify或者URLEncode的方式，或者自己写一个序列化函数，这种一般针对有多个变量，需要缓存数据有用，当然如果是是JavaScript内存缓存，可以使用 Map 就可以了，还不用这么费劲。</li>
+<li>MD5字符串方式，这种方式适合于文件或者大段文本情况，例如静态的缓存的判断会使用的ETag标签就是MD5字符串，当然前端页面用得相对较少，一般是后端缓存可能会涉及了。</li>
+</ol>
+<p>针对value的设计，主要是精简和完整性，精简是为了省空间，完整性看似和精简冲突，这其实是一个取舍的过程，在足够完整的情况下做精简的操作，也就是至少保证可用，例如缓存文章列表中文章是否被点击过，可以设计为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实用性设计</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">articleId</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 前瞻性设计</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">articleId</span>: [&#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&#x27;visited&#x27;</span>,</span><br><span class="line">    <span class="attr">value</span>: <span class="literal">true</span>,</span><br><span class="line">  &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我是推崇实用性设计，这种就比较精简，同时也满足现阶段的诉求，这就足够了，至于扩展性不强，以后的事情再说了，说不定就被裁员了，瞎操心那么多干啥。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>缓存数据很多情况下面可能不是不必要，其实如果不是性能要求高或者页面确实非常慢的，基本还是不太需要的。如果真有必要缓存，就需要考虑缓存的唯一性、生命周期管理等。写Bug不容易，希望大家少写代码多挣钱。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tiodot.github.io/2022/09/01/%E7%BC%93%E5%AD%98%E4%B9%8B%E5%9D%91%E2%80%94%E2%80%94%E7%BC%93%E5%AD%98%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%84%9F%E5%8F%97/" data-id="cl7j9g8840005clmhdvpw7ntr" data-title="缓存之坑——缓存数据的一些感受" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1/" rel="tag">设计</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/08/30/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E5%93%8D%E5%BA%94%E5%BC%8F%E9%A1%B5%E9%9D%A2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">如何创建响应式页面</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/" rel="tag">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/snippet/" rel="tag">snippet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1/" rel="tag">设计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 12.5px;">Angular</a> <a href="/tags/CSS/" style="font-size: 12.5px;">CSS</a> <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/HTML/" style="font-size: 12.5px;">HTML</a> <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/snippet/" style="font-size: 10px;">snippet</a> <a href="/tags/%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">设计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/09/01/%E7%BC%93%E5%AD%98%E4%B9%8B%E5%9D%91%E2%80%94%E2%80%94%E7%BC%93%E5%AD%98%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%84%9F%E5%8F%97/">缓存之坑——缓存数据的一些感受</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/30/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E5%93%8D%E5%BA%94%E5%BC%8F%E9%A1%B5%E9%9D%A2/">如何创建响应式页面</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/12/%E5%A6%82%E4%BD%95%E4%B8%80%E5%91%A8%E5%86%85%E7%86%9F%E6%82%89%E6%96%B0%E9%A1%B9%E7%9B%AE/">如何一周内熟悉新项目</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/23/ES6%E4%B9%8BIteration/">ES6之Iteration</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/11/WebStorm%E4%B9%8BJSCS/">WebStorm之JSCS</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 tiodot<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
