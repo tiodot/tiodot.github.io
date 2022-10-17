@@ -15,20 +15,22 @@
 <!-- End Google Analytics -->
 
   
-  <title>CSS居中显示 | Tiodot blog</title>
+  <title>如何治理项目（分析项目） | Tiodot blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="使用CSS3实现垂直左右居中显示 12345678.container &amp;#123;    top: 50%;    left: 50%;    transform: translate(-50%, -50%);    width: 300px;    height: 200px;    background: #FDFDFD;&amp;#125; 对应的html为 1&lt;div class&#x3D;&amp;quo">
+  <meta name="description" content="随着业务的迭代，不经意间写下的那几行代码，在后续的修修补补中，已经堆积成为屎山了。如果是自己一手造成了，还能游刃有余，修个 Bug 不至于引起雪崩。凡事都怕有个万一，是的，万一你接手了这么一个项目，而且这个万一的概率特别大，在换工作时，换业务方向时，业务有调整接手别人代码时，基本上能中奖。每一次改代码，都是嘴里念念有词，手上停滞不前。每一次上线都是胆战心惊，打开回滚页面，准备随时回滚以减少影响。一">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CSS居中显示">
-<meta property="og:url" content="https://xchb.work/2015/08/24/CSS%E5%B1%85%E4%B8%AD%E6%98%BE%E7%A4%BA/index.html">
+<meta property="og:title" content="如何治理项目（分析项目）">
+<meta property="og:url" content="https://xchb.work/2022/10/13/%E5%A6%82%E4%BD%95%E6%B2%BB%E7%90%86%E9%A1%B9%E7%9B%AE%EF%BC%88%E5%88%86%E6%9E%90%E9%A1%B9%E7%9B%AE%EF%BC%89/index.html">
 <meta property="og:site_name" content="Tiodot blog">
-<meta property="og:description" content="使用CSS3实现垂直左右居中显示 12345678.container &amp;#123;    top: 50%;    left: 50%;    transform: translate(-50%, -50%);    width: 300px;    height: 200px;    background: #FDFDFD;&amp;#125; 对应的html为 1&lt;div class&#x3D;&amp;quo">
+<meta property="og:description" content="随着业务的迭代，不经意间写下的那几行代码，在后续的修修补补中，已经堆积成为屎山了。如果是自己一手造成了，还能游刃有余，修个 Bug 不至于引起雪崩。凡事都怕有个万一，是的，万一你接手了这么一个项目，而且这个万一的概率特别大，在换工作时，换业务方向时，业务有调整接手别人代码时，基本上能中奖。每一次改代码，都是嘴里念念有词，手上停滞不前。每一次上线都是胆战心惊，打开回滚页面，准备随时回滚以减少影响。一">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2015-08-24T13:18:19.000Z">
-<meta property="article:modified_time" content="2022-08-11T07:18:44.292Z">
+<meta property="og:image" content="https://xchb.work/img/2022-10-14-11-02-33.png">
+<meta property="article:published_time" content="2022-10-13T03:18:18.000Z">
+<meta property="article:modified_time" content="2022-10-17T03:06:30.661Z">
 <meta property="article:author" content="tiodot">
-<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="项目管理">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xchb.work/img/2022-10-14-11-02-33.png">
   
     <link rel="alternate" href="/atom.xml" title="Tiodot blog" type="application/atom+xml">
   
@@ -85,10 +87,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-CSS居中显示" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-如何治理项目（分析项目）" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2015/08/24/CSS%E5%B1%85%E4%B8%AD%E6%98%BE%E7%A4%BA/" class="article-date">
-  <time class="dt-published" datetime="2015-08-24T13:18:19.000Z" itemprop="datePublished">2015-08-24</time>
+    <a href="/2022/10/13/%E5%A6%82%E4%BD%95%E6%B2%BB%E7%90%86%E9%A1%B9%E7%9B%AE%EF%BC%88%E5%88%86%E6%9E%90%E9%A1%B9%E7%9B%AE%EF%BC%89/" class="article-date">
+  <time class="dt-published" datetime="2022-10-13T03:18:18.000Z" itemprop="datePublished">2022-10-13</time>
 </a>
     
   </div>
@@ -99,7 +101,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      CSS居中显示
+      如何治理项目（分析项目）
     </h1>
   
 
@@ -107,29 +109,36 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>使用CSS3实现垂直左右居中显示</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    top: 50%;</span><br><span class="line">    left: 50%;</span><br><span class="line">    transform: translate(-50%, -50%);</span><br><span class="line">    width: 300px;</span><br><span class="line">    height: 200px;</span><br><span class="line">    background: #FDFDFD;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对应的html为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;container&quot;&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<p>最主要是随着浏览器窗口变化，左右上下边距也会自动调整，因而再也不需要通过js来监听windonw的resize事件了。</p>
+        <p>随着业务的迭代，不经意间写下的那几行代码，在后续的修修补补中，已经堆积成为屎山了。如果是自己一手造成了，还能游刃有余，修个 Bug 不至于引起雪崩。凡事都怕有个万一，是的，万一你接手了这么一个项目，而且这个万一的概率特别大，在换工作时，换业务方向时，业务有调整接手别人代码时，基本上能中奖。每一次改代码，都是嘴里念念有词，手上停滞不前。每一次上线都是胆战心惊，打开回滚页面，准备随时回滚以减少影响。一次又一次想推翻重来，然而没有人给予你勇气，直到有一天你能面对现实。。</p>
+<p><img src="/img/2022-10-14-11-02-33.png"></p>
 <span id="more"></span>
 
-<p>当然还有一种更加简单粗暴的方法，css代码如下</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    position: fixed;</span><br><span class="line">    width: 200px;</span><br><span class="line">    height: 200px;</span><br><span class="line">    background: orange;</span><br><span class="line">    left: 0;</span><br><span class="line">    right: 0;</span><br><span class="line">    top: 0;</span><br><span class="line">    bottom: 0;</span><br><span class="line">    margin: auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种方法利用的原理是</p>
-<blockquote>
-<p>‘margin-left’ + ‘border-left-width’ + ‘padding-left’ + ‘width’ + ‘padding-right’ + ‘border-right-width’ + ‘margin-right’ &#x3D; width of containing block</p>
-</blockquote>
-<p>详细请参考<a target="_blank" rel="noopener" href="http://www.w3.org/TR/CSS2/visudet.html#Computing_widths_and_margins">w3c标准</a></p>
+<p>对于技术人员来说，凡事能有一个通用的模型或者流程来分析，其实离解决问题就不远了。这要求我们需要具备分析问题，然后定义问题的能力。不知道是否有类似的经历，但别人反馈一个问题时，调试代码半天确没有复现，再对齐一下，结果是自己理解的问题和别人想要表达的不一样，这种情况很容易发生开发和测试之间，测试从行为角度去描述问题，开发从代码角度去尝试理解和复现问题，两种思维的差异就很容易造成问题。</p>
+<p>治理屎山代码，首先值得庆幸的我们发现了代码是一个问题，但具体是一个什么问题，就涉及到分析这个问题了，这是需要重点思考的地方，也是体现一个开发人员核心竞争力的点。分析问题一般需要从现状分析出发，看代码一般只会看到细节问题，分析现状就是自下而上的发现整个项目的问题，例如产品流程是否有问题，状态管理是否可以优化，组件分层是否不符合预期等。那我们有如何来分析一个项目的现状呢？</p>
+<p>可以从以下几点来分析，<strong>重点是描述现状，而不是预期优化</strong>：</p>
+<ol>
+<li><p>梳理所负责业务方向的场景、功能模块，对业务有一个概述。可以通过脑图划分场景，一般而言一个页面就是一个场景，例如列表页面、编辑页面都是一个业务场景，当然涉及到一个页面 tab&#x2F;step 这种，可以是多个场景。每一个场景会对应一个或者多个业务模块，一般就是组件纬度，例如列表页面这个场景中包含列表模块，筛选模块等。这一部分主要是对产品的流程的一个梳理，技术实现都是围绕产品功能展开的，有一个全貌，可以帮助更好的理解后续的技术上做的事情。关于场景、模块的论述可参考<a target="_blank" rel="noopener" href="https://www.woshipm.com/pd/2792834.html">基于场景的产品模块设计与规划</a></p>
+</li>
+<li><p>对梳理的场景进行分析，首先是分析场景的主流程，从前端视角说明核心的交互链路，这部分可以使用时序图和流程图来进行描述。时序图是用于描述用户、前端系统、后端系统之间的行为和响应。流程图用户描述用户的交互，例如列表页面的筛选时，输入筛选项 -&gt; 点击搜索 -&gt; 展示筛选结果或输入筛选项 -&gt; 展示筛选结果，这部分是补充模块的交互细节，并和前后端系统进行映射。</p>
+</li>
+<li><p>接下来是对场景下面的功能模块&amp;依赖分析，这部分主要是从前端的代码组织角度分析，可以使用<a target="_blank" rel="noopener" href="https://github.com/sverweij/dependency-cruiser">dependency-cruiser</a>对需要分析的页面进行输出一个依赖图，根据依赖图进行组件的分层描述，并对依赖的外包资源也进行归类，例如公司内部的，公司外部的等。</p>
+</li>
+<li><p>基于功能模块的分析，梳理数据状态，包含数据的流向分析和数据结构分析，前者帮助分析状态管理是否合理，后者帮助分析数据设计是否合理，例如一个比较典型的例子我们存储了列表数据，其 length 不应该单独存储，可以使用一个计算属性，Vue 中对应 computed 属性, React 可以使用 useMemo 缓存变量。</p>
+</li>
+<li><p>最后一个是异常的处理，对核心流程链路上，JS 异常或者接口异常等是否有异常处理，如何处理的，帮助分析是否对用户友好。</p>
+</li>
+</ol>
+<p>通过上述 5 个步骤，基本可以涵盖前端的项目设计和实现，可以帮助分析质量、性能、效率方面的问题。当然主要还是解决一个开发效率问题，架构的主要目的之一就是复用，复用主要也是提升开发效率。</p>
+<p>最后提醒一句勿忘记分析项目的初衷，<strong>是为了更好的定义问题</strong>，通过分析项目发现前端架构的问题（状态管理、代码规范）、实现的问题（依赖使用、代码分层）等。例如屎山代码最恶心的一点就是 all in one 模式，文件动辄几千行，这种对人的耐心是一个极大的挑战，通过分析项目就可以发现没有按照功能模块合理划分代码，一个文件包含 xx 个功能，导致文件极大。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://xchb.work/2015/08/24/CSS%E5%B1%85%E4%B8%AD%E6%98%BE%E7%A4%BA/" data-id="cl6q3oacs0008rumhg2g7fj0u" data-title="CSS居中显示" class="article-share-link">Share</a>
+      <a data-url="https://xchb.work/2022/10/13/%E5%A6%82%E4%BD%95%E6%B2%BB%E7%90%86%E9%A1%B9%E7%9B%AE%EF%BC%88%E5%88%86%E6%9E%90%E9%A1%B9%E7%9B%AE%EF%BC%89/" data-id="cl9c6eqaq000051mh3r9e73vp" data-title="如何治理项目（分析项目）" class="article-share-link">Share</a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
 
     </footer>
   </div>
@@ -137,19 +146,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/10/22/CSS3%E5%9B%BE%E6%A0%87%E6%94%B6%E9%9B%86%E5%92%8C%E6%95%B4%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          CSS3图标收集和整理
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/08/14/WebUploader%E4%BD%BF%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2022/09/28/%E4%BD%BF%E7%94%A8%E9%A3%9E%E4%B9%A6%E5%A4%9A%E7%BB%B4%E8%A1%A8%E6%A0%BC%E8%AE%B0%E8%B4%A6/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">WebUploader使用</div>
+      <div class="article-nav-title">使用飞书多维表格记账</div>
     </a>
   
 </nav>
