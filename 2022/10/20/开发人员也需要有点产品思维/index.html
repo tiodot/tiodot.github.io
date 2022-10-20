@@ -15,20 +15,24 @@
 <!-- End Google Analytics -->
 
   
-  <title>ES6之Iteration | Tiodot blog</title>
+  <title>开发人员也需要有点产品思维 | Tiodot blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="探索问题：  为什么ES6中数组，字符串等是可迭代的，而对象却是不可迭代？直观感受就是数组和字符串都可以用for...of，而对象却不可以。 实现一个最小化的迭代器。">
+  <meta name="description" content="听公司内部大佬的产品思维分析，以自我的视角的整理一下, 本文分为三个部分：  什么是产品思维； 为什么需要产品思维； 如何培养产品思维；">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ES6之Iteration">
-<meta property="og:url" content="https://xchb.work/2017/03/23/ES6%E4%B9%8BIteration/index.html">
+<meta property="og:title" content="开发人员也需要有点产品思维">
+<meta property="og:url" content="https://xchb.work/2022/10/20/%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E4%B9%9F%E9%9C%80%E8%A6%81%E6%9C%89%E7%82%B9%E4%BA%A7%E5%93%81%E6%80%9D%E7%BB%B4/index.html">
 <meta property="og:site_name" content="Tiodot blog">
-<meta property="og:description" content="探索问题：  为什么ES6中数组，字符串等是可迭代的，而对象却是不可迭代？直观感受就是数组和字符串都可以用for...of，而对象却不可以。 实现一个最小化的迭代器。">
+<meta property="og:description" content="听公司内部大佬的产品思维分析，以自我的视角的整理一下, 本文分为三个部分：  什么是产品思维； 为什么需要产品思维； 如何培养产品思维；">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2017-03-23T03:00:05.000Z">
-<meta property="article:modified_time" content="2022-08-11T07:18:44.293Z">
+<meta property="og:image" content="https://xchb.work/img/2022-10-20-11-22-14.png">
+<meta property="og:image" content="https://xchb.work/img/2022-10-20-13-59-53.png">
+<meta property="og:image" content="https://xchb.work/img/2022-10-20-14-16-37.png">
+<meta property="article:published_time" content="2022-10-20T03:17:28.000Z">
+<meta property="article:modified_time" content="2022-10-20T06:47:50.854Z">
 <meta property="article:author" content="tiodot">
-<meta property="article:tag" content="JS">
+<meta property="article:tag" content="产品, 技术">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xchb.work/img/2022-10-20-11-22-14.png">
   
     <link rel="alternate" href="/atom.xml" title="Tiodot blog" type="application/atom+xml">
   
@@ -85,10 +89,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-ES6之Iteration" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-开发人员也需要有点产品思维" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2017/03/23/ES6%E4%B9%8BIteration/" class="article-date">
-  <time class="dt-published" datetime="2017-03-23T03:00:05.000Z" itemprop="datePublished">2017-03-23</time>
+    <a href="/2022/10/20/%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E4%B9%9F%E9%9C%80%E8%A6%81%E6%9C%89%E7%82%B9%E4%BA%A7%E5%93%81%E6%80%9D%E7%BB%B4/" class="article-date">
+  <time class="dt-published" datetime="2022-10-20T03:17:28.000Z" itemprop="datePublished">2022-10-20</time>
 </a>
     
   </div>
@@ -99,7 +103,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      ES6之Iteration
+      开发人员也需要有点产品思维
     </h1>
   
 
@@ -107,44 +111,51 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>探索问题：</p>
+        <p><img src="/img/2022-10-20-11-22-14.png"></p>
+<p>听公司内部大佬的产品思维分析，以自我的视角的整理一下, 本文分为三个部分：</p>
 <ol>
-<li>为什么ES6中数组，字符串等是可迭代的，而对象却是不可迭代？直观感受就是数组和字符串都可以用<code>for...of</code>，而对象却不可以。</li>
-<li>实现一个最小化的迭代器。</li>
+<li>什么是产品思维；</li>
+<li>为什么需要产品思维；</li>
+<li>如何培养产品思维；</li>
 </ol>
 <span id="more"></span>
-<p>JavaScript中可以迭代的两种情景：</p>
-<ol>
-<li>程序层级：检测程序的结构</li>
-<li>数据层级：检测程序中所有的数据</li>
-</ol>
-<p>这两个层级过于抽象，尤其是<code>程序层级</code>，可以借助js中的数组来理解：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const dt = [1,2,3,4]; // 数据层</span><br><span class="line">dt.func = () =&gt; &#123;&#125;; // 程序层</span><br><span class="line"></span><br><span class="line">for (let i in dt) console.log(xs[i]); // 1, 2, 3, 4, () =&gt; &#123;&#125;</span><br><span class="line"></span><br><span class="line">for (let i of dt) console.log(i); // 1, 2, 3, 4</span><br></pre></td></tr></table></figure>
-<p>像ES5中的<code>for...in</code>可以检测对象中的所有属性，针对的大多数就是程序层级。为了解决这个问题，ES6中引入了<code>for...of</code>.</p>
-<blockquote>
-<p>那既然可以用<code>for...in</code>遍历对象，为何就不能用<code>for...of</code>了？</p>
-</blockquote>
-<p>如果设计可以迭代对象，也就意味着会混淆上面两个层级，简单的理解就是一个对象不可能仅仅只是像数组一样存储一组数据。如果混合上述两个概念，也就是说可以使用<code>for...of</code>遍历对象，意味着只能遍历对象的数据，而不能遍历其他程序层级的属性，相当于把对象当成一个数据层级来处理，这很可能会破坏代码结构。</p>
-<p>为了解决对象不可以使用<code>for...of</code>遍历的问题，ES6中引入了一个新的概念<code>Map</code>，使用<code>Map</code>创建的key-value对就可以迭代遍历。</p>
-<blockquote>
-<p>当然也可以做一个工具函数，来实现对对象的迭代。</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">objectEntries</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> index = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> propKeys = <span class="title class_">Reflect</span>.<span class="title function_">ownKeys</span>(obj);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        [<span class="title class_">Symbol</span>.<span class="property">iterator</span>]() &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">this</span>;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">next</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (index &lt; propKeys.<span class="property">length</span>) &#123;</span><br><span class="line">                <span class="keyword">const</span> key = propKeys[index];</span><br><span class="line">                index++;</span><br><span class="line">                <span class="keyword">return</span> &#123; <span class="attr">value</span>: [key, obj[key]] &#125;;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> &#123; <span class="attr">done</span>: <span class="literal">true</span> &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">first</span>: <span class="string">&#x27;Jane&#x27;</span>, <span class="attr">last</span>: <span class="string">&#x27;Doe&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> [key,value] <span class="keyword">of</span> <span class="title function_">objectEntries</span>(obj)) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;key&#125;</span>: <span class="subst">$&#123;value&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Output:</span></span><br><span class="line"><span class="comment">// first: Jane</span></span><br><span class="line"><span class="comment">// last: Doe</span></span><br></pre></td></tr></table></figure>
 
-<p>PS.可以思考一下为什么不扩充在Object原型链上？</p>
-<h1 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h1><ol>
-<li><a target="_blank" rel="noopener" href="http://exploringjs.com/es6/ch_iteration.html#sec_plain-objects-not-iterable">Plain objects are not iterable</a></li>
-<li><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/38777177">Why are Objects not Iterable in JavaScript?</a></li>
+<h2 id="什么是产品思维"><a href="#什么是产品思维" class="headerlink" title="什么是产品思维"></a>什么是产品思维</h2><p>做为一个研发，要精准定义产品思维有点难，简单理解是针对在满足用户需求的前提下提供较好的解决方案。首要条件是满足用户诉求，进一步成就用户，其次产品针对的不是个体，二是群体，就要求将个体诉求进行一个抽象，提升普适性，进而给出一个完整的产品解决方案。</p>
+<p>针对研发人员，相对于了解怎么去创造性或模仿竞品给出一个解决方案，更应该关注理解产品给出的解决方案：</p>
+<ol>
+<li>了解产品全貌，而不是单一的需求或单一的模块。站在用户视角去理解所有场景，力求看到的是整片森林，而不是被一片树叶遮蔽双眼；</li>
+<li>了解背后的原由，看到产品的全貌后，需要更进一步了解产品的来龙去脉，为什么是这样，还能怎么样。搞清楚前因后果，才能了解背后的逻辑。</li>
 </ol>
+<p>通过了解产品的全貌，知其然，进而认识设计的逻辑，知其所以然。</p>
+<h2 id="为什么需要产品思维"><a href="#为什么需要产品思维" class="headerlink" title="为什么需要产品思维"></a>为什么需要产品思维</h2><p>产品思维要求我们知其然也知其所以然，这样可以避免我们只是一个工具人。工具人是一种可替换的资源，你可以，别人也可以的。研发自我定位应该是资产，而不是资源。资源是消耗品，可替代性高。资产不一定能升值，但至少保值，其价值体现在能和产品一块共同创造产品。可以从三个纬度来说明为什么需要产品思维：</p>
+<ol>
+<li><p>我们都是社会性动物，需要被认同。这个可以参考马斯洛需求层次理论 <img src="/img/2022-10-20-13-59-53.png"> 存在不仅仅是为了解决温饱问题，需要有更高层次的精神诉求。试想一下当我们提出一个观点时，都希望被认可，被赞同。同理产品也是人，也需要被认同。但我们参与到产品中，了解事情的意义之后，能共同参与讨论，提供建议，这对自身而言更加具有归属感，从而能提升我们整个的投入度来协助产品完成这个事情。</p>
+</li>
+<li><p>提升研发效率。修路或修桥，一般都是两端并行开始，最后合拢，这样才是最快的一种方式。应用到我们工作中也是一样的，只有产品和技术齐头并进一块把事情做好，而不是一端来做这个事情。理解产品背后的逻辑，提前储备相关的人或技术，一定开始做具体的事情，快速取得效果。</p>
+</li>
+<li><p>增强信任感。人与人之间先相知才会相爱，没有相知，也就没有一起沟通的基础。同样的逻辑如果我们都不知道产品的需求是什么，不了解为什么需要做，怎么会信任产品，怎么能做好事情。了解产品需求的原由，结合现状给出合理的建议，减少双方的摩擦，这样才能互相理解。理解是合作的基础，也是信任的必要条件，否则：<img src="/img/2022-10-20-14-16-37.png"></p>
+</li>
+</ol>
+<p>当然具备产品思维之后，还是需要回归到我们技术本身，需要做到源于需求又高于需求。服务好业务的同时，也需要对业务的进行抽象，从而产出技术的规划。</p>
+<h2 id="如何培养产品思维"><a href="#如何培养产品思维" class="headerlink" title="如何培养产品思维"></a>如何培养产品思维</h2><p>技术人员做为产品需求的实现者，会需要了解更多的产品细节，有些细节可能在需求文档中没有体现，之前有类似的可能就那样做了。这是我们的职责，但需要进一步转换为我们的优势，也就是能自底而上的了解整个产品、业务的全貌：</p>
+<ol>
+<li><p>多看和多用。当了解一个需求细节时，需要主动多想想上下游的依赖，多去看看相关需求文档，用户手册等，也可以多体验线上的系统。把一个个孤岛系统串联起来。</p>
+</li>
+<li><p>多问和多想。很多时候我们都会陷入一种我以为你知道，所以就没有写。但发现问题或者不理解时需要多问问，问问题的过程中也能了解更多的前因后果，帮助我们更好的理解背后的逻辑。同时站着用户的角度，帮产品一块思考有没有更好的解决方案。也可以从技术角度给出些合理的方案，例如是否应该先借助 xx 验证，然后再落地。</p>
+</li>
+<li><p>追求极致。对我们自身业务属性的同时，也去看看竞品是怎么做的，是不是别人的交互流程更顺畅，页面体验会更好。或者有没有其他日常使用的系统体验更好，流程更短，能和业务结合从而有更佳的方案。</p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>做为研发同学，我们的产品思维不是如何去设计产品，重在理解产品设计背后的逻辑是什么。理解背后的逻辑，帮助产品，提高实现的效率，同时也降低风险。有时候产品也是很迷茫，需要的不一定是赞同，如果从技术角度发现不可行，对产品来说也是一种『解脱』。同时了解产品，最主要的还是帮助我们做好规划，从而升职加薪。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://xchb.work/2017/03/23/ES6%E4%B9%8BIteration/" data-id="cl6q3oacw000grumh1u1w1lrf" data-title="ES6之Iteration" class="article-share-link">Share</a>
+      <a data-url="https://xchb.work/2022/10/20/%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E4%B9%9F%E9%9C%80%E8%A6%81%E6%9C%89%E7%82%B9%E4%BA%A7%E5%93%81%E6%80%9D%E7%BB%B4/" data-id="cl9gpbph80000momhcqov10a3" data-title="开发人员也需要有点产品思维" class="article-share-link">Share</a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/" rel="tag">JS</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%A7%E5%93%81-%E6%8A%80%E6%9C%AF/" rel="tag">产品, 技术</a></li></ul>
 
     </footer>
   </div>
@@ -152,19 +163,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2022/08/12/%E5%A6%82%E4%BD%95%E4%B8%80%E5%91%A8%E5%86%85%E7%86%9F%E6%82%89%E6%96%B0%E9%A1%B9%E7%9B%AE/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          如何一周内熟悉新项目
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/03/11/WebStorm%E4%B9%8BJSCS/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2022/10/13/%E5%A6%82%E4%BD%95%E6%B2%BB%E7%90%86%E9%A1%B9%E7%9B%AE%EF%BC%88%E5%88%86%E6%9E%90%E9%A1%B9%E7%9B%AE%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">WebStorm之JSCS</div>
+      <div class="article-nav-title">如何治理项目（分析项目）</div>
     </a>
   
 </nav>
