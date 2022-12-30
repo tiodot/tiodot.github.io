@@ -82,6 +82,58 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-如何设计一个表单校验器" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/12/30/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E8%A1%A8%E5%8D%95%E6%A0%A1%E9%AA%8C%E5%99%A8/" class="article-date">
+  <time class="dt-published" datetime="2022-12-30T10:45:55.000Z" itemprop="datePublished">2022-12-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/12/30/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E8%A1%A8%E5%8D%95%E6%A0%A1%E9%AA%8C%E5%99%A8/">如何设计一个表单校验器</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="/img/2022-12-30-18-48-13.png"></p>
+<p>前端页面凡是涉及到用户输入，一般都会都数据校验。广义的说，涉及用户输入部分都可以统称之为表单。之所以需要对用户输入的数据进行校验，个人觉得有以下两个原因：</p>
+<ol>
+<li>系统的稳定性，我们不能保证用户输入是符合我们预期的，通过对输入的数据进行格式、内容校验，避免系统出现问题。例如需要输入年龄只能是正整数。</li>
+<li>用户体验，一般输入时就会给出提示，然后方便用户修正。例如输入的内容过长或者格式不对。</li>
+<li>数据安全或合规，避免用户输入一些不合规数据，例如游戏中各种激情互喷词语。</li>
+</ol>
+<p>为了保证数据的一致性，前、后端都会对数据进行校验，一般而言后端的校验会更加全面。前端更偏向于一些数据通用性质的校验，例如数据格式、是否为空、长度等。这里主要介绍如何实现一个前端的表单校验器，当然思路都是通用的。</p>
+        
+          <p class="article-more-link">
+            <a href="/2022/12/30/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E8%A1%A8%E5%8D%95%E6%A0%A1%E9%AA%8C%E5%99%A8/#more">阅读更多</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://xchb.work/2022/12/30/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E8%A1%A8%E5%8D%95%E6%A0%A1%E9%AA%8C%E5%99%A8/" data-id="clcae33z400033vmhcacf5b84" data-title="如何设计一个表单校验器" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-开发人员也需要有点产品思维" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/10/20/%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E4%B9%9F%E9%9C%80%E8%A6%81%E6%9C%89%E7%82%B9%E4%BA%A7%E5%93%81%E6%80%9D%E7%BB%B4/" class="article-date">
@@ -499,52 +551,6 @@
 
 
   
-    <article id="post-ES6之Destructuring" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/02/21/ES6%E4%B9%8BDestructuring/" class="article-date">
-  <time class="dt-published" datetime="2017-02-21T03:08:01.000Z" itemprop="datePublished">2017-02-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/02/21/ES6%E4%B9%8BDestructuring/">ES6之Destructuring</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>记录不同形式Destructuring导致的不同结果：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function move1(&#123;x=0, y=0&#125; = &#123;&#125;) &#123;</span><br><span class="line">    console.log(x, y)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function move2(&#123;x, y&#125; = &#123;x: 0, y: 0&#125;) &#123;</span><br><span class="line">    console.log(x, y)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        
-          <p class="article-more-link">
-            <a href="/2017/02/21/ES6%E4%B9%8BDestructuring/#more">阅读更多</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://xchb.work/2017/02/21/ES6%E4%B9%8BDestructuring/" data-id="cl6q3oacv000erumh5defh51a" data-title="ES6之Destructuring" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/" rel="tag">JS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -563,7 +569,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/" rel="tag">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/snippet/" rel="tag">snippet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A7%E5%93%81-%E6%8A%80%E6%9C%AF/" rel="tag">产品, 技术</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BB%B4%E8%A1%A8%E6%A0%BC/" rel="tag">多维表格</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1/" rel="tag">设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/" rel="tag">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/snippet/" rel="tag">snippet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A7%E5%93%81-%E6%8A%80%E6%9C%AF/" rel="tag">产品, 技术</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BB%B4%E8%A1%A8%E6%A0%BC/" rel="tag">多维表格</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1/" rel="tag">设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
     </div>
   </div>
 
@@ -573,7 +579,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Angular/" style="font-size: 12.5px;">Angular</a> <a href="/tags/CSS/" style="font-size: 12.5px;">CSS</a> <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/HTML/" style="font-size: 12.5px;">HTML</a> <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/snippet/" style="font-size: 10px;">snippet</a> <a href="/tags/%E4%BA%A7%E5%93%81-%E6%8A%80%E6%9C%AF/" style="font-size: 10px;">产品, 技术</a> <a href="/tags/%E5%A4%9A%E7%BB%B4%E8%A1%A8%E6%A0%BC/" style="font-size: 10px;">多维表格</a> <a href="/tags/%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">设计</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+      <a href="/tags/Angular/" style="font-size: 12.5px;">Angular</a> <a href="/tags/CSS/" style="font-size: 12.5px;">CSS</a> <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/HTML/" style="font-size: 12.5px;">HTML</a> <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/snippet/" style="font-size: 10px;">snippet</a> <a href="/tags/%E4%BA%A7%E5%93%81-%E6%8A%80%E6%9C%AF/" style="font-size: 10px;">产品, 技术</a> <a href="/tags/%E5%A4%9A%E7%BB%B4%E8%A1%A8%E6%A0%BC/" style="font-size: 10px;">多维表格</a> <a href="/tags/%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">设计</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
     </div>
   </div>
 
@@ -582,7 +588,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
     </div>
   </div>
 
@@ -593,6 +599,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/12/30/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E8%A1%A8%E5%8D%95%E6%A0%A1%E9%AA%8C%E5%99%A8/">如何设计一个表单校验器</a>
+          </li>
         
           <li>
             <a href="/2022/10/20/%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E4%B9%9F%E9%9C%80%E8%A6%81%E6%9C%89%E7%82%B9%E4%BA%A7%E5%93%81%E6%80%9D%E7%BB%B4/">开发人员也需要有点产品思维</a>
@@ -608,10 +618,6 @@
         
           <li>
             <a href="/2022/09/01/%E7%BC%93%E5%AD%98%E4%B9%8B%E5%9D%91%E2%80%94%E2%80%94%E7%BC%93%E5%AD%98%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%84%9F%E6%83%B3/">缓存之坑——缓存数据的一些感想</a>
-          </li>
-        
-          <li>
-            <a href="/2022/08/30/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E5%93%8D%E5%BA%94%E5%BC%8F%E9%A1%B5%E9%9D%A2/">如何创建响应式页面</a>
           </li>
         
       </ul>

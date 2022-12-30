@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3LTDW72KLK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3LTDW72KLK');
+</script>
+<!-- End Google Analytics -->
+
+  
+  <title>如何设计一个表单校验器 | Tiodot blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前端页面凡是涉及到用户输入，一般都会都数据校验。广义的说，涉及用户输入部分都可以统称之为表单。之所以需要对用户输入的数据进行校验，个人觉得有以下两个原因：  系统的稳定性，我们不能保证用户输入是符合我们预期的，通过对输入的数据进行格式、内容校验，避免系统出现问题。例如需要输入年龄只能是正整数。 用户体验，一般输入时就会给出提示，然后方便用户修正。例如输入的内容过长或者格式不对。 数据安全或合规，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何设计一个表单校验器">
+<meta property="og:url" content="https://xchb.work/2022/12/30/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E8%A1%A8%E5%8D%95%E6%A0%A1%E9%AA%8C%E5%99%A8/index.html">
+<meta property="og:site_name" content="Tiodot blog">
+<meta property="og:description" content="前端页面凡是涉及到用户输入，一般都会都数据校验。广义的说，涉及用户输入部分都可以统称之为表单。之所以需要对用户输入的数据进行校验，个人觉得有以下两个原因：  系统的稳定性，我们不能保证用户输入是符合我们预期的，通过对输入的数据进行格式、内容校验，避免系统出现问题。例如需要输入年龄只能是正整数。 用户体验，一般输入时就会给出提示，然后方便用户修正。例如输入的内容过长或者格式不对。 数据安全或合规，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://xchb.work/img/2022-12-30-18-48-13.png">
+<meta property="og:image" content="https://xchb.work/img/2022-12-30-16-51-58.png">
+<meta property="og:image" content="https://xchb.work/img/2022-12-30-16-52-58.png">
+<meta property="og:image" content="https://xchb.work/img/2022-12-30-17-48-54.png">
+<meta property="og:image" content="https://xchb.work/img/2022-12-30-17-55-47.png">
+<meta property="article:published_time" content="2022-12-30T10:45:55.000Z">
+<meta property="article:modified_time" content="2022-12-30T10:49:35.021Z">
+<meta property="article:author" content="tiodot">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xchb.work/img/2022-12-30-18-48-13.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Tiodot blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Tiodot blog</a>
+      </h1>
+      
+    </div>
+    <!-- <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://xchb.work"></form>
+      </div>
+    </div> -->
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-如何设计一个表单校验器" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/12/30/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E8%A1%A8%E5%8D%95%E6%A0%A1%E9%AA%8C%E5%99%A8/" class="article-date">
+  <time class="dt-published" datetime="2022-12-30T10:45:55.000Z" itemprop="datePublished">2022-12-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      如何设计一个表单校验器
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="/img/2022-12-30-18-48-13.png"></p>
+<p>前端页面凡是涉及到用户输入，一般都会都数据校验。广义的说，涉及用户输入部分都可以统称之为表单。之所以需要对用户输入的数据进行校验，个人觉得有以下两个原因：</p>
+<ol>
+<li>系统的稳定性，我们不能保证用户输入是符合我们预期的，通过对输入的数据进行格式、内容校验，避免系统出现问题。例如需要输入年龄只能是正整数。</li>
+<li>用户体验，一般输入时就会给出提示，然后方便用户修正。例如输入的内容过长或者格式不对。</li>
+<li>数据安全或合规，避免用户输入一些不合规数据，例如游戏中各种激情互喷词语。</li>
+</ol>
+<p>为了保证数据的一致性，前、后端都会对数据进行校验，一般而言后端的校验会更加全面。前端更偏向于一些数据通用性质的校验，例如数据格式、是否为空、长度等。这里主要介绍如何实现一个前端的表单校验器，当然思路都是通用的。</p>
+<span id="more"></span>
+
+<h2 id="给表单添加校验"><a href="#给表单添加校验" class="headerlink" title="给表单添加校验"></a>给表单添加校验</h2><p>假设我们需要实现一个收集用户姓名、年龄的的表单页面，要求是：</p>
+<ol>
+<li>用户的输入姓名只支持中文，且长度不能超过 10；</li>
+<li>输入的年龄只能整数，且在 20 至 60 之间；</li>
+<li>数据都是必填，且姓名不能全部为空字符串；</li>
+</ol>
+<p>首先我们需要完成这样的一个表单页面：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">&quot;form&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;姓名&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;number&quot;</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;年龄&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span>submit<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其次按照要求对用户填写的数据进行校验，最简单的实现方式可能为：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> $form = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#form&quot;</span>);</span><br><span class="line">$form.<span class="title function_">addEventListener</span>(<span class="string">&quot;submit&quot;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  event.<span class="title function_">preventDefault</span>();</span><br><span class="line">  <span class="keyword">const</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>($form);</span><br><span class="line">  <span class="keyword">const</span> name = formData.<span class="title function_">get</span>(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">  <span class="keyword">const</span> age = formData.<span class="title function_">get</span>(<span class="string">&quot;age&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span> (!name.<span class="title function_">trim</span>() || !age) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;必填&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (name.<span class="property">length</span> &gt; <span class="number">10</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;姓名长度不能超过10字符&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="regexp">/[\u4e00-\u9fa5]+/g</span>.<span class="title function_">test</span>(name)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;姓名必须为中文&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">isNaN</span>(<span class="title class_">Number</span>(age)) || age &lt; <span class="number">20</span> || age &gt; <span class="number">60</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;年龄需是20~60间的整数&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Success:&quot;</span>, name, age);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这里校验不通过时，以<code>console.error</code>模拟异常提示，实际情况应该是对应的输入框展示对应的异常提示，展示的效果如下：</p>
+<p><img src="/img/2022-12-30-16-51-58.png"></p>
+<p><img src="/img/2022-12-30-16-52-58.png"></p>
+<p>代码很简单易懂，如果是活动页面或一次性页面，这样实现已经足够了，但如果表单可能有变动的可能性，这段代码有比较显著的缺点：</p>
+<ol>
+<li>表单提交函数比较庞大，包含很多条件(if)语句，条件语句多了对阅读容易产生干扰；</li>
+<li>表单提交函数扩展性较差，如果需要新增一个规则，就需要深入函数了解所有逻辑，然后再新增一段校验逻辑；</li>
+<li>代码可复用性较差，如果有另外一个类似表单，需要复制粘贴这段校验代码。</li>
+</ol>
+<p>针对这些问题，我们可以通过策略模式来解决</p>
+<h2 id="基于策略模式的表单校验器"><a href="#基于策略模式的表单校验器" class="headerlink" title="基于策略模式的表单校验器"></a>基于策略模式的表单校验器</h2><p>策略模式是定义一系列可以替换的函数&#x2F;组件&#x2F;实现，它们之间可以互相进行替换。例如我们想从上海去北京，可以选择飞机、火车、自驾等方式，不同出行方式可以理解就是不同的策略。过程不一致，但目标都是差不多的。</p>
+<p>其实在 JavaScript 中，我们很多时候都在使用策略模式，例如场景的不同状态渲染不同的文字：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> status2text = &#123;</span><br><span class="line">  <span class="number">1</span>: <span class="string">&quot;草稿&quot;</span>,</span><br><span class="line">  <span class="number">2</span>: <span class="string">&quot;完成&quot;</span>,</span><br><span class="line">  <span class="number">3</span>: <span class="string">&quot;删除&quot;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>同理，针对表单校验我们也可以定义对应的校验策略：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> validateStrategies = &#123;</span><br><span class="line">  <span class="title function_">isNumber</span>(<span class="params">value, message</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">isNaN</span>(<span class="title class_">Number</span>(value))) &#123;</span><br><span class="line">      <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">isNonEmpty</span>(<span class="params">value, message</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!value) &#123;</span><br><span class="line">      <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">maxLength</span>(<span class="params">value, message, length</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (value.<span class="property">length</span> &gt; length) &#123;</span><br><span class="line">      <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">isChinese</span>(<span class="params">value, message</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="regexp">/[\u4e00-\u9fa5]+/g</span>.<span class="title function_">test</span>(value)) &#123;</span><br><span class="line">      <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">max</span>(<span class="params">value, message, maxValue</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (value &gt; maxValue) &#123;</span><br><span class="line">      <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">min</span>(<span class="params">value, message, minValue</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (value &lt; minValue) &#123;</span><br><span class="line">      <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>定义好校验策略之后，这些策略是针对具体某些场景的校验，实际应用时还需要一个数据和策略的关联：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> validateRule = &#123;</span><br><span class="line">  <span class="attr">name</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">strategy</span>: <span class="string">&quot;isNonEmpty&quot;</span>,</span><br><span class="line">      <span class="attr">message</span>: <span class="string">&quot;姓名不能为空&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">strategy</span>: <span class="string">&quot;maxLength&quot;</span>,</span><br><span class="line">      <span class="attr">param</span>: <span class="number">10</span>,</span><br><span class="line">      <span class="attr">message</span>: <span class="string">&quot;姓名长度不能超过10字符&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">strategy</span>: <span class="string">&quot;isChinese&quot;</span>,</span><br><span class="line">      <span class="attr">message</span>: <span class="string">&quot;姓名必须为中文&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">age</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">strategy</span>: <span class="string">&quot;isNonEmpty&quot;</span>,</span><br><span class="line">      <span class="attr">message</span>: <span class="string">&quot;年龄不能为空&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">strategy</span>: <span class="string">&quot;isNumber&quot;</span>,</span><br><span class="line">      <span class="attr">message</span>: <span class="string">&quot;年龄需要为数字类型&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">strategy</span>: <span class="string">&quot;max&quot;</span>,</span><br><span class="line">      <span class="attr">param</span>: <span class="number">60</span>,</span><br><span class="line">      <span class="attr">message</span>: <span class="string">&quot;年龄不能超过 60&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">strategy</span>: <span class="string">&quot;min&quot;</span>,</span><br><span class="line">      <span class="attr">param</span>: <span class="number">20</span>,</span><br><span class="line">      <span class="attr">message</span>: <span class="string">&quot;年龄不能低于 20&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>因为不同校验规可能需要额外的参数的，例如最长长度，或者最大、最小值判断，需要有一个比较的参照值，通过额外的<code>param</code>来传递。接下来改造一下我们的提交函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> $form = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#form&quot;</span>);</span><br><span class="line">$form.<span class="title function_">addEventListener</span>(<span class="string">&quot;submit&quot;</span>, <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">  event.<span class="title function_">preventDefault</span>();</span><br><span class="line">  <span class="keyword">const</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>($form);</span><br><span class="line">  <span class="comment">// 这一段还可以继续抽象做为一个validate函数</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> [key, value] <span class="keyword">of</span> formData.<span class="title function_">entries</span>()) &#123;</span><br><span class="line">    <span class="keyword">const</span> rules = validateRule[key];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> rule <span class="keyword">of</span> rules) &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; strategy, message, param &#125; = rule;</span><br><span class="line">      <span class="keyword">const</span> error = validateStrategies[strategy](value, message, param);</span><br><span class="line">      <span class="keyword">if</span> (error) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(error);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Success:&quot;</span>, formData.<span class="title function_">get</span>(<span class="string">&quot;name&quot;</span>), formData.<span class="title function_">get</span>(<span class="string">&quot;age&quot;</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>效果和之前的基本一样</p>
+<p><img src="/img/2022-12-30-17-48-54.png"></p>
+<p>通过策略模式重构表单校验器之后，代码变得更加复杂了一些，代码量也更大了些，但代码更好理解了不少, 整体层次为：</p>
+<p><img src="/img/2022-12-30-17-55-47.png"></p>
+<p>校验规则可以多个表单复用，如果表单需要新增字段或者针对已有字段新增校验规则，只需要修改 validateRule 的映射即可，在实际开发过程中可以将 validateRule 做进一步的优化，例如放在后端下发，可以动态配置校验规则，也可以结合 Dom 节点，增加一些属性表示校验规则，这样就不同写单独的配置了。</p>
+<p>文章中所涉及的代码可以在<a target="_blank" rel="noopener" href="https://codepen.io/bitbug/pen/ExpKQLY">copen</a>查看和体验</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://xchb.work/2022/12/30/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E8%A1%A8%E5%8D%95%E6%A0%A1%E9%AA%8C%E5%99%A8/" data-id="clcae33z400033vmhcacf5b84" data-title="如何设计一个表单校验器" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/10/20/%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E4%B9%9F%E9%9C%80%E8%A6%81%E6%9C%89%E7%82%B9%E4%BA%A7%E5%93%81%E6%80%9D%E7%BB%B4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">开发人员也需要有点产品思维</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/" rel="tag">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML/" rel="tag">HTML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/snippet/" rel="tag">snippet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%A7%E5%93%81-%E6%8A%80%E6%9C%AF/" rel="tag">产品, 技术</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BB%B4%E8%A1%A8%E6%A0%BC/" rel="tag">多维表格</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1/" rel="tag">设计</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" rel="tag">项目管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 12.5px;">Angular</a> <a href="/tags/CSS/" style="font-size: 12.5px;">CSS</a> <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/HTML/" style="font-size: 12.5px;">HTML</a> <a href="/tags/JS/" style="font-size: 20px;">JS</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/snippet/" style="font-size: 10px;">snippet</a> <a href="/tags/%E4%BA%A7%E5%93%81-%E6%8A%80%E6%9C%AF/" style="font-size: 10px;">产品, 技术</a> <a href="/tags/%E5%A4%9A%E7%BB%B4%E8%A1%A8%E6%A0%BC/" style="font-size: 10px;">多维表格</a> <a href="/tags/%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">设计</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" style="font-size: 10px;">项目管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/12/30/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E8%A1%A8%E5%8D%95%E6%A0%A1%E9%AA%8C%E5%99%A8/">如何设计一个表单校验器</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/20/%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E4%B9%9F%E9%9C%80%E8%A6%81%E6%9C%89%E7%82%B9%E4%BA%A7%E5%93%81%E6%80%9D%E7%BB%B4/">开发人员也需要有点产品思维</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/13/%E5%A6%82%E4%BD%95%E6%B2%BB%E7%90%86%E9%A1%B9%E7%9B%AE%EF%BC%88%E5%88%86%E6%9E%90%E9%A1%B9%E7%9B%AE%EF%BC%89/">如何治理项目（分析项目）</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/28/%E4%BD%BF%E7%94%A8%E9%A3%9E%E4%B9%A6%E5%A4%9A%E7%BB%B4%E8%A1%A8%E6%A0%BC%E8%AE%B0%E8%B4%A6/">使用飞书多维表格记账</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/01/%E7%BC%93%E5%AD%98%E4%B9%8B%E5%9D%91%E2%80%94%E2%80%94%E7%BC%93%E5%AD%98%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E6%84%9F%E6%83%B3/">缓存之坑——缓存数据的一些感想</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 tiodot<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
