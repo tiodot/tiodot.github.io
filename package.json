@@ -8,7 +8,8 @@
     "deploy": "hexo generate && hexo deploy",
     "server": "hexo server",
     "new": "hexo new",
-    "draft": "hexo new draft"
+    "draft": "hexo new draft",
+    "pub": "hexo publish"
   },
   "hexo": {
     "version": "6.2.0"
